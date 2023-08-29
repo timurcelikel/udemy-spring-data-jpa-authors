@@ -5,4 +5,5 @@
 	<include file="/db/changelog/db.init-hibernate-seq.xml"/>
 	<include file="/db/changelog/db.create-author.xml"/>
 	<include file="/db/changelog/db.init-author-seq.xml"/>
+	<include file="/db/changelog/db.add-authorid-to-book.xml"/>
 </databaseChangeLog>

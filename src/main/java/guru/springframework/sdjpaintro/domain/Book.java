@@ -20,15 +20,18 @@ public class Book {
 
 	private String publisher;
 
+	private Long authorId;
+
 	public Book() {
 
 	}
 
-	public Book(final String title, final String isbn, final String publisher) {
+	public Book(final String title, final String isbn, final String publisher, final Long authorId) {
 
 		this.title = title;
 		this.isbn = isbn;
 		this.publisher = publisher;
+		this.authorId = authorId;
 	}
 
 	public Long getId() {
@@ -71,6 +74,16 @@ public class Book {
 		this.publisher = publisher;
 	}
 
+	public Long getAuthorId() {
+
+		return authorId;
+	}
+
+	public void setAuthorId(final Long authorId) {
+
+		this.authorId = authorId;
+	}
+
 	@Override
 	public boolean equals(final Object o) {
 
@@ -81,12 +94,37 @@ public class Book {
 
 		final Book book = (Book) o;
 
-		return Objects.equals(id, book.id);
+		if (!Objects.equals(id, book.id))
+			return false;
+		if (!Objects.equals(title, book.title))
+			return false;
+		if (!Objects.equals(isbn, book.isbn))
+			return false;
+		if (!Objects.equals(publisher, book.publisher))
+			return false;
+		return Objects.equals(authorId, book.authorId);
 	}
 
 	@Override
 	public int hashCode() {
 
-		return id != null ? id.hashCode() : 0;
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (title != null ? title.hashCode() : 0);
+		result = 31 * result + (isbn != null ? isbn.hashCode() : 0);
+		result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
+		result = 31 * result + (authorId != null ? authorId.hashCode() : 0);
+		return result;
+	}
+
+	@Override
+	public String toString() {
+
+		return "Book{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", isbn='" + isbn + '\'' +
+				", publisher='" + publisher + '\'' +
+				", authorId=" + authorId +
+				'}';
 	}
 }
