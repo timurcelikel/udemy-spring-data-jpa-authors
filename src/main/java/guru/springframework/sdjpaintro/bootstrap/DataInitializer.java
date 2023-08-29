@@ -2,8 +2,10 @@ package guru.springframework.sdjpaintro.bootstrap;
 
 import guru.springframework.sdjpaintro.domain.AuthorUuid;
 import guru.springframework.sdjpaintro.domain.Book;
+import guru.springframework.sdjpaintro.domain.BookUuid;
 import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
+import guru.springframework.sdjpaintro.repositories.BookUuidRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -16,10 +18,14 @@ public class DataInitializer implements CommandLineRunner {
 
 	private final AuthorUuidRepository authorUuidRepository;
 
-	public DataInitializer(final BookRepository bookRepository, final AuthorUuidRepository authorUuidRepository) {
+	private final BookUuidRepository bookUuidRepository;
+
+	public DataInitializer(final BookRepository bookRepository, final AuthorUuidRepository authorUuidRepository,
+			final BookUuidRepository bookUuidRepository) {
 
 		this.bookRepository = bookRepository;
 		this.authorUuidRepository = authorUuidRepository;
+		this.bookUuidRepository = bookUuidRepository;
 	}
 
 	@Override
@@ -43,5 +49,11 @@ public class DataInitializer implements CommandLineRunner {
 		authorUuid.setLastName("Buck");
 		AuthorUuid savedAuthor = authorUuidRepository.save(authorUuid);
 		System.out.println("Saved Author UUID: " + savedAuthor.getId());
+
+		BookUuid bookUuid = new BookUuid();
+		bookUuid.setIsbn("1243434353");
+		bookUuid.setTitle("East of Eden");
+		BookUuid savedBook = bookUuidRepository.save(bookUuid);
+		System.out.println("Saved Book UUID: " + savedBook.getId());
 	}
 }
