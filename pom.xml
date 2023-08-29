@@ -13,9 +13,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sdjpa-intro</name>
 	<description>Udemy Spring Data JPA Intro</description>
+
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -46,6 +48,32 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<!--start with basic information to get Liquibase plugin:
+				include <groupId>, <artifactID>, and <version> elements-->
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>4.23.1</version>
+				<configuration>
+					<!--set values for Liquibase properties and settings
+					for example, the location of a properties file to use-->
+					<!-- <propertyFile>liquibase.properties</propertyFile>-->
+					<url>jdbc:mysql://localhost:3306/bookdb?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</url>
+					<username>bookadmin</username>
+					<password>password</password>
+					<outputChangeLogFile>changelog.xml</outputChangeLogFile>
+					<changeSetAuthor>TC</changeSetAuthor>
+					<changelogSchemaName>bookdb</changelogSchemaName>
+				</configuration>
+				<dependencies>
+					<!--set up any dependencies for Liquibase to function in your environment for example, a database-specific plugin-->
+					<dependency>
+						<groupId>com.mysql</groupId>
+						<artifactId>mysql-connector-j</artifactId>
+						<version>${mysql.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
