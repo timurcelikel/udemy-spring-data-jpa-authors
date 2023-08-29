@@ -4,5 +4,6 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <include file="db/changelog/baseline-changelog.xml"/>
+    <include file="/db/changelog/db.baseline-changelog.xml"/>
+    <include file="/db/changelog/db.init-hibernate-seq.xml"/>
 </databaseChangeLog>
