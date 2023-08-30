@@ -1,8 +1,10 @@
 package guru.springframework.sdjpaintro.bootstrap;
 
+import guru.springframework.sdjpaintro.domain.Author;
 import guru.springframework.sdjpaintro.domain.AuthorUuid;
 import guru.springframework.sdjpaintro.domain.Book;
 import guru.springframework.sdjpaintro.domain.BookUuid;
+import guru.springframework.sdjpaintro.repositories.AuthorRepository;
 import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
 import guru.springframework.sdjpaintro.repositories.BookUuidRepository;
@@ -16,14 +18,18 @@ public class DataInitializer implements CommandLineRunner {
 
 	private final BookRepository bookRepository;
 
+	private final AuthorRepository authorRepository;
+
 	private final AuthorUuidRepository authorUuidRepository;
 
 	private final BookUuidRepository bookUuidRepository;
 
-	public DataInitializer(final BookRepository bookRepository, final AuthorUuidRepository authorUuidRepository,
+	public DataInitializer(final BookRepository bookRepository, final AuthorRepository authorRepository,
+			final AuthorUuidRepository authorUuidRepository,
 			final BookUuidRepository bookUuidRepository) {
 
 		this.bookRepository = bookRepository;
+		this.authorRepository = authorRepository;
 		this.authorUuidRepository = authorUuidRepository;
 		this.bookUuidRepository = bookUuidRepository;
 	}
@@ -32,6 +38,9 @@ public class DataInitializer implements CommandLineRunner {
 	public void run(final String... args) throws Exception {
 
 		bookRepository.deleteAll();
+		authorRepository.deleteAll();
+		authorUuidRepository.deleteAll();
+		bookUuidRepository.deleteAll();
 
 		Book bookDDD = new Book("Domain Driven Design", "123", "RandomHouse", null);
 		bookRepository.save(bookDDD);
@@ -43,6 +52,11 @@ public class DataInitializer implements CommandLineRunner {
 			System.out.println("Book Id: " + book.getId());
 			System.out.println("Book Title: " + book.getTitle());
 		});
+
+		Author author = new Author();
+		author.setFirstName("John");
+		author.setLastName("Steinbeck");
+		authorRepository.save(author);
 
 		AuthorUuid authorUuid = new AuthorUuid();
 		authorUuid.setFirstName("Joe");
