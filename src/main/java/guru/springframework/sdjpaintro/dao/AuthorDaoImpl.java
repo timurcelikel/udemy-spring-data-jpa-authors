@@ -36,29 +36,13 @@ public class AuthorDaoImpl implements AuthorDao {
 			ps.setLong(1, id);    // Not zero indexed. Sub in the value for the placeholder
 			resultSet = ps.executeQuery();
 			if (resultSet.next()) {
-				Author author = new Author();
-				author.setId(id);
-				author.setFirstName(resultSet.getString("first_name"));
-				author.setLastName(resultSet.getString("last_name"));
-
-				return author;
+				return getAuthorFromResultSet(resultSet);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (resultSet != null) {
-					resultSet.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-				if (ps != null) {
-					ps.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
+				closeAll(resultSet, ps, connection);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -82,30 +66,111 @@ public class AuthorDaoImpl implements AuthorDao {
 			resultSet = ps.executeQuery();
 
 			if (resultSet.next()) {
-				Author author = new Author();
-				author.setId(resultSet.getLong("id"));
-				author.setFirstName(firstName);
-				author.setLastName(lastName);
-
-				return author;
+				return getAuthorFromResultSet(resultSet);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (resultSet != null) {
-					resultSet.close();
-				}
-				if (ps != null) {
-					ps.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
+				closeAll(resultSet, ps, connection);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Author saveAuthor(final Author author) {
+
+		Connection connection = null;
+		PreparedStatement ps = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = dataSource.getConnection();
+
+			ps = connection.prepareStatement("INSERT INTO author (first_name, last_name) values (?, ?)");
+			ps.setString(1, author.getFirstName());
+			ps.setString(2, author.getLastName());
+			ps.execute();
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
+			if (resultSet.next()) {
+				Long savedId = resultSet.getLong(1);
+				return this.getById(savedId);
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeAll(resultSet, ps, connection);
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Author updateAuthor(final Author author) {
+
+		Connection connection = null;
+		PreparedStatement ps = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = dataSource.getConnection();
+
+			ps = connection.prepareStatement("UPDATE author SET first_name = ?, last_name = ?");
+			ps.setString(1, author.getFirstName());
+			ps.setString(2, author.getLastName());
+			ps.execute();
+
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
+			if (resultSet.next()) {
+				Long savedId = resultSet.getLong(1);
+				return this.getById(savedId);
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeAll(resultSet, ps, connection);
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	private Author getAuthorFromResultSet(final ResultSet resultSet) throws SQLException {
+
+		Author author = new Author();
+		author.setId(resultSet.getLong("id"));
+		author.setFirstName(resultSet.getString("first_name"));
+		author.setLastName(resultSet.getString("last_name"));
+		return author;
+	}
+
+	private void closeAll(final ResultSet resultSet, final PreparedStatement ps, final Connection connection) throws SQLException {
+
+		if (resultSet != null) {
+			resultSet.close();
+		}
+		if (ps != null) {
+			ps.close();
+		}
+		if (connection != null) {
+			connection.close();
+		}
 	}
 }
