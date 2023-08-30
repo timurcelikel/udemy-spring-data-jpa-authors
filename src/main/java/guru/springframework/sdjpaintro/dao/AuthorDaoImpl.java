@@ -4,10 +4,7 @@ import guru.springframework.sdjpaintro.domain.Author;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @Component
 public class AuthorDaoImpl implements AuthorDao {
@@ -24,6 +21,7 @@ public class AuthorDaoImpl implements AuthorDao {
 
 		Connection connection = null;
 		Statement statement = null;
+		PreparedStatement ps = null;
 		ResultSet resultSet = null;
 
 		try {
@@ -32,7 +30,11 @@ public class AuthorDaoImpl implements AuthorDao {
 
 			// Definitely don't do this in prod without a prepared statement and bind parameters
 			// Can lead to SQL injection
-			resultSet = statement.executeQuery("SELECT * FROM author where id = " + id);
+			//resultSet = statement.executeQuery("SELECT * FROM author where id = " + id);
+			// Instead use prepared statements
+			ps = connection.prepareStatement("SELECT * FROM author where id = ?");
+			ps.setLong(1, id);    // Not zero indexed. Sub in the value for the placeholder
+			resultSet = ps.executeQuery();
 			if (resultSet.next()) {
 				Author author = new Author();
 				author.setId(id);
@@ -50,6 +52,52 @@ public class AuthorDaoImpl implements AuthorDao {
 				}
 				if (statement != null) {
 					statement.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Author findAuthorByName(final String firstName, final String lastName) {
+
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = dataSource.getConnection();
+
+			ps = connection.prepareStatement("SELECT * FROM author where first_name = ? and last_name = ?");
+			ps.setString(1, firstName);
+			ps.setString(2, lastName);
+			resultSet = ps.executeQuery();
+
+			if (resultSet.next()) {
+				Author author = new Author();
+				author.setId(resultSet.getLong("id"));
+				author.setFirstName(firstName);
+				author.setLastName(lastName);
+
+				return author;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+				if (ps != null) {
+					ps.close();
 				}
 				if (connection != null) {
 					connection.close();
