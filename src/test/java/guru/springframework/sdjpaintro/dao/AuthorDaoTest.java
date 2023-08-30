@@ -23,6 +23,24 @@ public class AuthorDaoTest {
 	AuthorDao authorDao;
 
 	@Test
+	void testDeleteAuthor() {
+
+		Author author = new Author();
+		author.setFirstName("Pee-wee");
+		author.setLastName("Herman");
+		Author savedAuthor = authorDao.saveAuthor(author);
+
+		assertThat(savedAuthor.getFirstName()).isEqualTo("Pee-wee");
+		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
+
+		authorDao.deleteAuthorById(savedAuthor.getId());
+
+		Author deletedAuthor = authorDao.getById(savedAuthor.getId());
+
+		assertThat(deletedAuthor).isNull();
+	}
+
+	@Test
 	void testUpdateAuthor() {
 
 		Author author = new Author();

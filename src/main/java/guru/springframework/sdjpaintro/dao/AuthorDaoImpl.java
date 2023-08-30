@@ -102,7 +102,6 @@ public class AuthorDaoImpl implements AuthorDao {
 				Long savedId = resultSet.getLong(1);
 				return this.getById(savedId);
 			}
-			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -121,35 +120,49 @@ public class AuthorDaoImpl implements AuthorDao {
 
 		Connection connection = null;
 		PreparedStatement ps = null;
-		Statement statement = null;
 		ResultSet resultSet = null;
 
 		try {
 			connection = dataSource.getConnection();
 
-			ps = connection.prepareStatement("UPDATE author SET first_name = ?, last_name = ?");
+			ps = connection.prepareStatement("UPDATE author SET first_name = ?, last_name = ? where id = ?");
 			ps.setString(1, author.getFirstName());
 			ps.setString(2, author.getLastName());
+			ps.setLong(3, author.getId());
 			ps.execute();
-
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
-			if (resultSet.next()) {
-				Long savedId = resultSet.getLong(1);
-				return this.getById(savedId);
-			}
-			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
 				closeAll(resultSet, ps, connection);
-				statement.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return this.getById(author.getId());
+	}
+
+	@Override
+	public void deleteAuthorById(final Long id) {
+
+		Connection connection = null;
+		PreparedStatement ps = null;
+
+		try {
+			connection = dataSource.getConnection();
+
+			ps = connection.prepareStatement("DELETE from author where id = ?");
+			ps.setLong(1, id);
+			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeAll(null, ps, connection);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private Author getAuthorFromResultSet(final ResultSet resultSet) throws SQLException {
