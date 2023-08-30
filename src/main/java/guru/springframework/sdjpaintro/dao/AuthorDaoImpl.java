@@ -1,4 +1,5 @@
 package guru.springframework.sdjpaintro.dao;
+
 import guru.springframework.sdjpaintro.domain.Author;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +12,16 @@ import java.sql.Statement;
 @Component
 public class AuthorDaoImpl implements AuthorDao {
 
-	private DataSource dataSource;
+	private final DataSource dataSource;
 
 	public AuthorDaoImpl(final DataSource dataSource) {
+
 		this.dataSource = dataSource;
 	}
+
 	@Override
 	public Author getById(final Long id) {
+
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
@@ -39,6 +43,20 @@ public class AuthorDaoImpl implements AuthorDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
