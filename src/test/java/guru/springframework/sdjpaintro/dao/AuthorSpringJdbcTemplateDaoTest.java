@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class AuthorSpringJdbcTemplateDaoTest {
 
 	@Autowired
-	AuthorSpringJdbcTemplateDao authorSpringJdbcTemplateDao;
+	AuthorDao authorSpringJdbcTemplateDao;
 
 	@Test
 	void testGetAuthorById() {

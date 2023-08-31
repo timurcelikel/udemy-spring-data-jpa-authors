@@ -14,10 +14,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @Import(AuthorJdbcDaoImpl.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class AuthorJdbcDaoTest {
+public class AuthorDaoTest {
 
 	@Autowired
-	AuthorJdbcDao authorJdbcDao;
+	AuthorDao authorJdbcDao;
 
 	@Test
 	void testGetAuthorById() {

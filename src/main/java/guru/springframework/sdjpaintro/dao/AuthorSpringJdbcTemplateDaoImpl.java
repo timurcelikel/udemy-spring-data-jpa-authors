@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthorSpringJdbcTemplateDaoImpl implements AuthorSpringJdbcTemplateDao {
+public class AuthorSpringJdbcTemplateDaoImpl implements AuthorDao {
 
 	private final JdbcTemplate jdbcTemplate;
 
