@@ -1,10 +1,8 @@
 package guru.springframework.sdjpaintro.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +15,10 @@ public class Author {
 	private String firstName;
 
 	private String lastName;
+
+	// @Transient tells Hibernate ignore this field when doing a DDL validate
+	@Transient
+	private List<Book> books;
 
 	public Long getId() {
 
@@ -48,6 +50,12 @@ public class Author {
 		this.lastName = lastName;
 	}
 
+	public List<Book> getBooks() {
+		return books;
+	}
+	public void setBooks(final List<Book> books) {
+		this.books = books;
+	}
 	@Override
 	public boolean equals(final Object o) {
 
