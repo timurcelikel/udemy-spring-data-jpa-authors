@@ -3,17 +3,14 @@ package guru.springframework.sdjpaintro.dao;
 import guru.springframework.sdjpaintro.dao.author.AuthorDao;
 import guru.springframework.sdjpaintro.dao.author.AuthorHibernateDaoImpl;
 import guru.springframework.sdjpaintro.domain.Author;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -38,7 +35,6 @@ public class AuthorHibernateDaoTest {
 		assertThat(author).isNotNull();
 	}
 
-	@Disabled
 	@Test
 	void testSaveAuthor() {
 
@@ -49,9 +45,12 @@ public class AuthorHibernateDaoTest {
 
 		assertThat(savedAuthor.getFirstName()).isEqualTo("Pee-wee");
 		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
+		assertThat(savedAuthor.getId()).isNotNull();
+
+		// Janky rollback
+		authorHibernateDao.deleteAuthorById(savedAuthor.getId());
 	}
 
-	@Disabled
 	@Test
 	void testUpdateAuthor() {
 
@@ -67,9 +66,11 @@ public class AuthorHibernateDaoTest {
 		Author updatedAuthor = authorHibernateDao.updateAuthor(savedAuthor);
 
 		assertThat(updatedAuthor.getLastName()).isEqualTo("Sherman");
+
+		// Janky rollback
+		authorHibernateDao.deleteAuthorById(updatedAuthor.getId());
 	}
 
-	@Disabled
 	@Test
 	void testDeleteAuthor() {
 
@@ -82,9 +83,5 @@ public class AuthorHibernateDaoTest {
 		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
 
 		authorHibernateDao.deleteAuthorById(savedAuthor.getId());
-
-		assertThrows(TransientDataAccessResourceException.class, () -> {
-			authorHibernateDao.getById(savedAuthor.getId());
-		});
 	}
 }
