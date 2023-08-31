@@ -1,60 +1,36 @@
 package guru.springframework.sdjpaintro.dao;
 
 import guru.springframework.sdjpaintro.domain.Author;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("local")
+@ActiveProfiles("dao")
 @DataJpaTest
-@Import(AuthorDaoImpl.class)
-@ComponentScan(basePackages = { "guru.springframework.sdjpaintro.bootstrap" })
+@Import(AuthorJdbcDaoImpl.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class AuthorDaoTest {
+public class AuthorJdbcDaoTest {
 
 	@Autowired
-	AuthorDao authorDao;
+	AuthorJdbcDao authorJdbcDao;
 
 	@Test
-	void testDeleteAuthor() {
+	void testGetAuthorById() {
 
-		Author author = new Author();
-		author.setFirstName("Pee-wee");
-		author.setLastName("Herman");
-		Author savedAuthor = authorDao.saveAuthor(author);
-
-		assertThat(savedAuthor.getFirstName()).isEqualTo("Pee-wee");
-		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
-
-		authorDao.deleteAuthorById(savedAuthor.getId());
-
-		Author deletedAuthor = authorDao.getById(savedAuthor.getId());
-
-		assertThat(deletedAuthor).isNull();
+		Author author = authorJdbcDao.getById(1L);
+		assertThat(author).isNotNull();
 	}
 
 	@Test
-	void testUpdateAuthor() {
+	void testFindAuthorByName() {
 
-		Author author = new Author();
-		author.setFirstName("Pee-wee");
-		author.setLastName("Herman");
-		Author savedAuthor = authorDao.saveAuthor(author);
-
-		assertThat(savedAuthor.getFirstName()).isEqualTo("Pee-wee");
-		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
-
-		savedAuthor.setLastName("Sherman");
-		Author updatedAuthor = authorDao.updateAuthor(savedAuthor);
-
-		assertThat(updatedAuthor.getLastName()).isEqualTo("Sherman");
+		Author author = authorJdbcDao.findAuthorByName("John", "Steinbeck");
+		assertThat(author).isNotNull();
 	}
 
 	@Test
@@ -63,24 +39,45 @@ public class AuthorDaoTest {
 		Author author = new Author();
 		author.setFirstName("Pee-wee");
 		author.setLastName("Herman");
-		Author savedAuthor = authorDao.saveAuthor(author);
+		Author savedAuthor = authorJdbcDao.saveAuthor(author);
 
 		assertThat(savedAuthor.getFirstName()).isEqualTo("Pee-wee");
 		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
 	}
 
 	@Test
-	void testFindAuthorByName() {
+	void testUpdateAuthor() {
 
-		Author author = authorDao.findAuthorByName("John", "Steinbeck");
-		assertThat(author).isNotNull();
+		Author author = new Author();
+		author.setFirstName("Pee-wee");
+		author.setLastName("Herman");
+		Author savedAuthor = authorJdbcDao.saveAuthor(author);
+
+		assertThat(savedAuthor.getFirstName()).isEqualTo("Pee-wee");
+		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
+
+		savedAuthor.setLastName("Sherman");
+		Author updatedAuthor = authorJdbcDao.updateAuthor(savedAuthor);
+
+		assertThat(updatedAuthor.getLastName()).isEqualTo("Sherman");
 	}
 
 	@Test
-	@Disabled("Disabled until I can restart auto-increment")
-	void testGetAuthorById() {
+	void testDeleteAuthor() {
 
-		Author author = authorDao.getById(1L);
-		assertThat(author).isNotNull();
+		Author author = new Author();
+		author.setFirstName("Pee-wee");
+		author.setLastName("Herman");
+		Author savedAuthor = authorJdbcDao.saveAuthor(author);
+
+		assertThat(savedAuthor.getFirstName()).isEqualTo("Pee-wee");
+		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
+
+		authorJdbcDao.deleteAuthorById(savedAuthor.getId());
+
+		Author deletedAuthor = authorJdbcDao.getById(savedAuthor.getId());
+
+		assertThat(deletedAuthor).isNull();
 	}
+
 }

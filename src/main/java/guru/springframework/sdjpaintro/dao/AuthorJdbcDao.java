@@ -2,7 +2,7 @@ package guru.springframework.sdjpaintro.dao;
 
 import guru.springframework.sdjpaintro.domain.Author;
 
-public interface AuthorDao {
+public interface AuthorJdbcDao {
 
 	Author getById(Long id);
 

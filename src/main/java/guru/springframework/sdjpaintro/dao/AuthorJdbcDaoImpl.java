@@ -7,11 +7,11 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 @Component
-public class AuthorDaoImpl implements AuthorDao {
+public class AuthorJdbcDaoImpl implements AuthorJdbcDao {
 
 	private final DataSource dataSource;
 
-	public AuthorDaoImpl(final DataSource dataSource) {
+	public AuthorJdbcDaoImpl(final DataSource dataSource) {
 
 		this.dataSource = dataSource;
 	}
