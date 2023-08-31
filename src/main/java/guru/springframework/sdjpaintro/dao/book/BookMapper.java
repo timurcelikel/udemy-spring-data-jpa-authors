@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.dao;
+package guru.springframework.sdjpaintro.dao.book;
 
 import guru.springframework.sdjpaintro.domain.Book;
 import org.springframework.jdbc.core.RowMapper;

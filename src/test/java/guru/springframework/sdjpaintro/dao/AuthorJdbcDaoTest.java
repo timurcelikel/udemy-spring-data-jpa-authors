@@ -1,20 +1,23 @@
 package guru.springframework.sdjpaintro.dao;
 
+import guru.springframework.sdjpaintro.dao.author.AuthorDao;
+import guru.springframework.sdjpaintro.dao.author.AuthorJdbcDaoImpl;
 import guru.springframework.sdjpaintro.domain.Author;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("dao")
+@ActiveProfiles("test")
 @DataJpaTest
 @Import(AuthorJdbcDaoImpl.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class AuthorDaoTest {
+public class AuthorJdbcDaoTest {
 
 	@Autowired
 	AuthorDao authorJdbcDao;
@@ -34,6 +37,7 @@ public class AuthorDaoTest {
 	}
 
 	@Test
+	@Rollback(value = true)
 	void testSaveAuthor() {
 
 		Author author = new Author();
@@ -46,6 +50,7 @@ public class AuthorDaoTest {
 	}
 
 	@Test
+	@Rollback(value = true)
 	void testUpdateAuthor() {
 
 		Author author = new Author();

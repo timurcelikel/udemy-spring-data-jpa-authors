@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.dao;
+package guru.springframework.sdjpaintro.dao.author;
 
 import guru.springframework.sdjpaintro.domain.Author;
 import guru.springframework.sdjpaintro.domain.Book;
@@ -34,6 +34,7 @@ public class AuthorMapper implements RowMapper<Author> {
 
 		return author;
 	}
+
 	private Book mapBook(final ResultSet rs) throws SQLException {
 
 		Book book = new Book();

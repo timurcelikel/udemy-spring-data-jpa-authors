@@ -9,28 +9,29 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
-@ComponentScan(basePackages = { "guru.springframework.sdjpaintro.bootstrap" })
+// Leaving the below line here as a reference to how to run DataInitializer each time
+//@ComponentScan(basePackages = { "guru.springframework.sdjpaintro.bootstrap" })
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class SpringBootJpaSliceTest {
 
 	@Autowired
 	BookRepository bookRepository;
 
-	@Commit
+	//@Commit 		-- leaving this here but bad idea not to rollback test data
 	//@Rollback(value = false)
 	@Order(1)
 	@Test
 	void testJpaTestSlice() {
 
 		long countBefore = bookRepository.count();
-		assertThat(countBefore).isEqualTo(2);
+		assertThat(countBefore).isEqualTo(5);
 
 		bookRepository.save(new Book("My Book", "12345", "Self", null));
 		long countAfter = bookRepository.count();
@@ -43,6 +44,6 @@ public class SpringBootJpaSliceTest {
 	void testJpaTestSliceTransaction() {
 
 		long countBefore = bookRepository.count();
-		assertThat(countBefore).isEqualTo(3);
+		assertThat(countBefore).isEqualTo(5);
 	}
 }

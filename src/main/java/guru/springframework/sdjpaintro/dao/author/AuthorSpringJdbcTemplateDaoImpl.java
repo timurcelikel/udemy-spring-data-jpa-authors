@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.dao;
+package guru.springframework.sdjpaintro.dao.author;
 
 import guru.springframework.sdjpaintro.domain.Author;
 import org.springframework.jdbc.core.JdbcTemplate;

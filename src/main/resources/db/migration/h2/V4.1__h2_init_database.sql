@@ -16,3 +16,5 @@ create table author
     last_name  varchar(255),
     primary key (id)
 );
+insert into author (first_name, last_name)
+values ('John', 'Steinbeck');
