@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DataJpaTest
 @Import(AuthorHibernateDaoImpl.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Disabled
 public class AuthorHibernateDaoTest {
 
 	@Autowired
@@ -39,6 +38,7 @@ public class AuthorHibernateDaoTest {
 		assertThat(author).isNotNull();
 	}
 
+	@Disabled
 	@Test
 	void testSaveAuthor() {
 
@@ -51,6 +51,7 @@ public class AuthorHibernateDaoTest {
 		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
 	}
 
+	@Disabled
 	@Test
 	void testUpdateAuthor() {
 
@@ -68,6 +69,7 @@ public class AuthorHibernateDaoTest {
 		assertThat(updatedAuthor.getLastName()).isEqualTo("Sherman");
 	}
 
+	@Disabled
 	@Test
 	void testDeleteAuthor() {
 

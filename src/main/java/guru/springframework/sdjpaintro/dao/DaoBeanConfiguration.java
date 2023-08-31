@@ -4,6 +4,7 @@ import guru.springframework.sdjpaintro.dao.author.AuthorDao;
 import guru.springframework.sdjpaintro.dao.author.AuthorHibernateDaoImpl;
 import guru.springframework.sdjpaintro.dao.author.AuthorJdbcDaoImpl;
 import guru.springframework.sdjpaintro.dao.author.AuthorSpringJdbcTemplateDaoImpl;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,10 +18,13 @@ public class DaoBeanConfiguration {
 
 	private final JdbcTemplate jdbcTemplate;
 
-	public DaoBeanConfiguration(final DataSource dataSource, final JdbcTemplate jdbcTemplate) {
+	private final EntityManagerFactory entityManagerFactory;
+
+	public DaoBeanConfiguration(final DataSource dataSource, final JdbcTemplate jdbcTemplate, final EntityManagerFactory entityManagerFactory) {
 
 		this.dataSource = dataSource;
 		this.jdbcTemplate = jdbcTemplate;
+		this.entityManagerFactory = entityManagerFactory;
 	}
 
 	@Bean
@@ -38,7 +42,7 @@ public class DaoBeanConfiguration {
 	@Bean
 	public AuthorDao authorHibernateDao() {
 
-		return new AuthorHibernateDaoImpl();
+		return new AuthorHibernateDaoImpl(entityManagerFactory);
 	}
 
 }
