@@ -40,12 +40,15 @@ public class AuthorSpringJdbcTemplateDaoImpl implements AuthorSpringJdbcTemplate
 	@Override
 	public Author updateAuthor(final Author author) {
 
-		return null;
+		jdbcTemplate.update("UPDATE author set first_name = ?, last_name = ? where id = ?", author.getFirstName(), author.getLastName(),
+				author.getId());
+		return this.getById(author.getId());
 	}
 
 	@Override
 	public void deleteAuthorById(final Long id) {
 
+		jdbcTemplate.update("DELETE from author where id = ?", id);
 	}
 
 	private RowMapper<Author> getRowMapper() {
