@@ -10,9 +10,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
+@ActiveProfiles("test") // See note in sublime notes around why this annotation and conditional annotations could be bad
 @DataJpaTest
 @Import(AuthorHibernateDaoImpl.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -20,6 +22,14 @@ public class AuthorHibernateDaoTest {
 
 	@Autowired
 	AuthorDao authorHibernateDao;
+
+	@Test
+	void testListAuthorByLastNameLike() {
+
+		List<Author> authors = authorHibernateDao.listAuthorByLastNameLike("Stein");
+		assertThat(authors).isNotNull();
+		assertThat(authors.size()).isGreaterThan(0);
+	}
 
 	@Test
 	void testGetAuthorById() {

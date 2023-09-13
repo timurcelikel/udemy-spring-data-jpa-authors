@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class AuthorJdbcDaoImpl implements AuthorDao {
@@ -14,6 +16,38 @@ public class AuthorJdbcDaoImpl implements AuthorDao {
 	public AuthorJdbcDaoImpl(final DataSource dataSource) {
 
 		this.dataSource = dataSource;
+	}
+
+	@Override
+	public List<Author> listAuthorByLastNameLike(final String lastName) {
+
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = dataSource.getConnection();
+
+			ps = connection.prepareStatement("SELECT * FROM author where last_name like ?");
+			ps.setString(1, lastName + "%");
+			resultSet = ps.executeQuery();
+
+			List<Author> authors = new ArrayList<>();
+
+			if (resultSet.next()) {
+				authors.add(getAuthorFromResultSet(resultSet));
+			}
+			return authors;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeAll(resultSet, ps, connection);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	@Override

@@ -3,7 +3,10 @@ package guru.springframework.sdjpaintro.dao.author;
 import guru.springframework.sdjpaintro.domain.Author;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+
+import java.util.List;
 
 public class AuthorHibernateDaoImpl implements AuthorDao {
 
@@ -15,22 +18,43 @@ public class AuthorHibernateDaoImpl implements AuthorDao {
 	}
 
 	@Override
+	public List<Author> listAuthorByLastNameLike(final String lastName) {
+
+		EntityManager em = getEntityManager();
+		try {
+			Query query = em.createQuery("SELECT a from Author a where a.lastName like :last_name");
+			query.setParameter("last_name", lastName + "%");
+			List<Author> authors = query.getResultList();
+			return authors;
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
 	public Author getById(final Long id) {
 
+		EntityManager em = getEntityManager();
 		// Here we are working with the JPA entities and we are asking Hibernate to create a query for an Author with the passed in id.
-		return getEntityManager().find(Author.class, id);
+		Author author = em.find(Author.class, id);
+		em.close();
+		return author;
 	}
 
 	@Override
 	public Author findAuthorByName(final String firstName, final String lastName) {
 
+		EntityManager em = getEntityManager();
 		// Hibernate JQL
-		TypedQuery<Author> query = getEntityManager().createQuery("SELECT a FROM Author a WHERE a.firstName = :first_name and a.lastName = "
+		TypedQuery<Author> query = em.createQuery("SELECT a FROM Author a WHERE a.firstName = :first_name and a.lastName = "
 				+ ":last_name", Author.class);
 		query.setParameter("first_name", firstName);
 		query.setParameter("last_name", lastName);
 
-		return query.getSingleResult();
+		Author author = query.getSingleResult();
+		em.close();
+
+		return author;
 	}
 
 	@Override
@@ -41,6 +65,7 @@ public class AuthorHibernateDaoImpl implements AuthorDao {
 		em.persist(author);                               // Save it
 		em.flush();                                       // Flush it to the db
 		em.getTransaction().commit();                     // Commit
+		em.close();
 
 		return author;
 	}

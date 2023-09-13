@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
@@ -21,6 +23,14 @@ public class AuthorJdbcDaoTest {
 
 	@Autowired
 	AuthorDao authorJdbcDao;
+
+	@Test
+	void testFindAuthorsByLastNameLike() {
+
+		List<Author> authors = authorJdbcDao.listAuthorByLastNameLike("Stein");
+		assertThat(authors).isNotNull();
+		assertThat(authors.size()).isGreaterThan(0);
+	}
 
 	@Test
 	void testGetAuthorById() {

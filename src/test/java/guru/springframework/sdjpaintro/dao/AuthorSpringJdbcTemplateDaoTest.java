@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -22,6 +24,14 @@ public class AuthorSpringJdbcTemplateDaoTest {
 
 	@Autowired
 	AuthorDao authorSpringJdbcTemplateDao;
+
+	@Test
+	void testFindAuthorsByLastNameLike() {
+
+		List<Author> authors = authorSpringJdbcTemplateDao.listAuthorByLastNameLike("Stein");
+		assertThat(authors).isNotNull();
+		assertThat(authors.size()).isGreaterThan(0);
+	}
 
 	@Test
 	void testGetAuthorById() {

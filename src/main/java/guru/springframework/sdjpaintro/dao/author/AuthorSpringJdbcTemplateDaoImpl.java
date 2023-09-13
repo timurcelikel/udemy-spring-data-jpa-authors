@@ -5,6 +5,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class AuthorSpringJdbcTemplateDaoImpl implements AuthorDao {
 
@@ -13,6 +15,12 @@ public class AuthorSpringJdbcTemplateDaoImpl implements AuthorDao {
 	public AuthorSpringJdbcTemplateDaoImpl(final JdbcTemplate jdbcTemplate) {
 
 		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	@Override
+	public List<Author> listAuthorByLastNameLike(final String lastName) {
+
+		return jdbcTemplate.query("SELECT * FROM author where last_name like ?", getRowMapper(), lastName + "%");
 	}
 
 	@Override
