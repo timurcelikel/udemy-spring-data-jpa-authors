@@ -8,7 +8,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class AuthorHibernateDaoImpl implements AuthorDao {
+public class AuthorHibernateDaoImpl implements AuthorDao, AuthorQueryDao {
 
 	private final EntityManagerFactory entityManagerFactory;
 
@@ -18,8 +18,18 @@ public class AuthorHibernateDaoImpl implements AuthorDao {
 	}
 
 	@Override
+	public List<Author> findAll() {
+
+		try (EntityManager em = getEntityManager()) {
+			TypedQuery<Author> typedQuery = em.createNamedQuery("author_find_all", Author.class);
+			return typedQuery.getResultList();
+		}
+	}
+
+	@Override
 	public List<Author> listAuthorByLastNameLike(final String lastName) {
 
+		// Better to use try with resources
 		EntityManager em = getEntityManager();
 		try {
 			Query query = em.createQuery("SELECT a from Author a where a.lastName like :last_name");
@@ -29,6 +39,30 @@ public class AuthorHibernateDaoImpl implements AuthorDao {
 		} finally {
 			em.close();
 		}
+	}
+
+	@Override
+	public Author getByIdQuery(final Long id) {
+
+		// This Non-Typed Query requires us to cast to Author
+		EntityManager em = getEntityManager();
+		Query query = em.createQuery("SELECT a from Author a where a.id = :id");
+		query.setParameter("id", id);
+		Author author = (Author) query.getSingleResult();        // Non-Typed Query requires casting
+		em.close();
+		return author;
+	}
+
+	@Override
+	public Author getByIdTypedQuery(final Long id) {
+
+		// This Non-Typed Query requires us to cast to Author
+		EntityManager em = getEntityManager();
+		TypedQuery<Author> query = em.createQuery("SELECT a from Author a where a.id = :id", Author.class);
+		query.setParameter("id", id);
+		Author author = query.getSingleResult();        // Typed Query does not require casting
+		em.close();
+		return author;
 	}
 
 	@Override

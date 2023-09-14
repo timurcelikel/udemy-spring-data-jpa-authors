@@ -57,6 +57,9 @@ public class AuthorJdbcDaoTest {
 
 		assertThat(savedAuthor.getFirstName()).isEqualTo("Pee-wee");
 		assertThat(savedAuthor.getLastName()).isEqualTo("Herman");
+
+		// Janky Rollback - above annotation didn't work
+		authorJdbcDao.deleteAuthorById(savedAuthor.getId());
 	}
 
 	@Test
@@ -75,6 +78,9 @@ public class AuthorJdbcDaoTest {
 		Author updatedAuthor = authorJdbcDao.updateAuthor(savedAuthor);
 
 		assertThat(updatedAuthor.getLastName()).isEqualTo("Sherman");
+
+		// Janky Rollback - above annotation didn't work
+		authorJdbcDao.deleteAuthorById(updatedAuthor.getId());
 	}
 
 	@Test

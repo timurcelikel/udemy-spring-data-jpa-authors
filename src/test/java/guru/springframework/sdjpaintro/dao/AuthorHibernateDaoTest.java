@@ -2,6 +2,7 @@ package guru.springframework.sdjpaintro.dao;
 
 import guru.springframework.sdjpaintro.dao.author.AuthorDao;
 import guru.springframework.sdjpaintro.dao.author.AuthorHibernateDaoImpl;
+import guru.springframework.sdjpaintro.dao.author.AuthorQueryDao;
 import guru.springframework.sdjpaintro.domain.Author;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,33 @@ public class AuthorHibernateDaoTest {
 
 	@Autowired
 	AuthorDao authorHibernateDao;
+
+	@Autowired
+	AuthorQueryDao authorHibernateQueryDao;
+
+	@Test
+	void testFindAllNamedQuery() {
+
+		List<Author> author = authorHibernateQueryDao.findAll();
+		assertThat(author).isNotNull();
+		assertThat(author.size()).isGreaterThan(0);
+	}
+
+	@Test
+	void testQueryAuthorById() {
+
+		Author author = authorHibernateQueryDao.getByIdQuery(1L);
+		assertThat(author).isNotNull();
+		assertThat(author.getLastName()).isEqualTo("Steinbeck");
+	}
+
+	@Test
+	void testTypedQueryAuthorById() {
+
+		Author author = authorHibernateQueryDao.getByIdTypedQuery(1L);
+		assertThat(author).isNotNull();
+		assertThat(author.getLastName()).isEqualTo("Steinbeck");
+	}
 
 	@Test
 	void testListAuthorByLastNameLike() {
@@ -78,7 +106,8 @@ public class AuthorHibernateDaoTest {
 		assertThat(updatedAuthor.getLastName()).isEqualTo("Sherman");
 
 		// Janky rollback
-		authorHibernateDao.deleteAuthorById(updatedAuthor.getId());
+		authorHibernateDao.deleteAuthorById(savedAuthor.getId());
+		//authorHibernateDao.deleteAuthorById(updatedAuthor.getId());
 	}
 
 	@Test

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@NamedQuery(name = "author_find_all", query = "FROM Author")
 @Entity
 public class Author {
 
@@ -51,11 +52,15 @@ public class Author {
 	}
 
 	public List<Book> getBooks() {
+
 		return books;
 	}
+
 	public void setBooks(final List<Book> books) {
+
 		this.books = books;
 	}
+
 	@Override
 	public boolean equals(final Object o) {
 
