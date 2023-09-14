@@ -1,6 +1,7 @@
 package guru.springframework.sdjpaintro.dao;
 
 import guru.springframework.sdjpaintro.dao.author.*;
+import guru.springframework.sdjpaintro.repositories.AuthorRepository;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +18,15 @@ public class AuthorDaoBeanConfiguration {
 
 	private final EntityManagerFactory entityManagerFactory;
 
+	private final AuthorRepository authorRepository;
+
 	public AuthorDaoBeanConfiguration(final DataSource dataSource, final JdbcTemplate jdbcTemplate,
-			final EntityManagerFactory entityManagerFactory) {
+			final EntityManagerFactory entityManagerFactory, final AuthorRepository authorRepository) {
 
 		this.dataSource = dataSource;
 		this.jdbcTemplate = jdbcTemplate;
 		this.entityManagerFactory = entityManagerFactory;
+		this.authorRepository = authorRepository;
 	}
 
 	@Bean
@@ -47,6 +51,12 @@ public class AuthorDaoBeanConfiguration {
 	public AuthorQueryDao authorHibernateQueryDao() {
 
 		return new AuthorHibernateDaoImpl(entityManagerFactory);
+	}
+
+	@Bean
+	public AuthorDao authorSpringDataDao() {
+
+		return new AuthorSpringDataDaoImpl(authorRepository);
 	}
 
 }

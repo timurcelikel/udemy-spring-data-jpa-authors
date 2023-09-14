@@ -6,9 +6,11 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class AuthorHibernateDaoImpl implements AuthorDao, AuthorQueryDao {
 
 	private final EntityManagerFactory entityManagerFactory;
