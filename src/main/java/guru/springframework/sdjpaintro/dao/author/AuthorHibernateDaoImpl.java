@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 
 import java.util.List;
 
@@ -15,6 +16,42 @@ public class AuthorHibernateDaoImpl implements AuthorDao, AuthorQueryDao {
 	public AuthorHibernateDaoImpl(final EntityManagerFactory entityManagerFactory) {
 
 		this.entityManagerFactory = entityManagerFactory;
+	}
+
+	@Override
+	public Author findAuthorByNameNative(String firstName, String lastName) {
+
+		try (EntityManager em = getEntityManager()) {
+			Query query = em.createNativeQuery("SELECT * FROM author a WHERE a.first_name = ? and a.last_name = ?", Author.class);
+			query.setParameter(1, firstName);
+			query.setParameter(2, lastName);
+			return (Author) query.getSingleResult();
+		}
+	}
+
+	@Override
+	public Author findAuthorByNameCriteria(String firstName, String lastName) {
+
+		try (EntityManager em = getEntityManager()) {
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Author> cq = cb.createQuery(Author.class);
+
+			Root<Author> root = cq.from(Author.class);
+
+			ParameterExpression<String> firstNameParam = cb.parameter(String.class);
+			ParameterExpression<String> lastNameParam = cb.parameter(String.class);
+
+			Predicate firstNamePred = cb.equal(root.get("firstName"), firstNameParam);
+			Predicate lastNamePred = cb.equal(root.get("lastName"), lastNameParam);
+
+			cq.select(root).where(cb.and(firstNamePred, lastNamePred));
+
+			TypedQuery<Author> typedQuery = em.createQuery(cq);
+			typedQuery.setParameter(firstNameParam, firstName);
+			typedQuery.setParameter(lastNameParam, lastName);
+
+			return typedQuery.getSingleResult();
+		}
 	}
 
 	@Override
@@ -79,9 +116,13 @@ public class AuthorHibernateDaoImpl implements AuthorDao, AuthorQueryDao {
 	public Author findAuthorByName(final String firstName, final String lastName) {
 
 		EntityManager em = getEntityManager();
-		// Hibernate JQL
-		TypedQuery<Author> query = em.createQuery("SELECT a FROM Author a WHERE a.firstName = :first_name and a.lastName = "
-				+ ":last_name", Author.class);
+
+		// Hibernate JQL with a TypedQuery
+		//TypedQuery<Author> query = em.createQuery("SELECT a FROM Author a WHERE a.firstName = :first_name and a.lastName = "
+		//		+ ":last_name", Author.class);
+
+		// We use the NamedQuery on the Author entity instead of JQL
+		TypedQuery<Author> query = em.createNamedQuery("find_by_name", Author.class);
 		query.setParameter("first_name", firstName);
 		query.setParameter("last_name", lastName);
 

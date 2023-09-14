@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-@NamedQuery(name = "author_find_all", query = "FROM Author")
+@NamedQueries({
+		@NamedQuery(name = "author_find_all", query = "FROM Author"),
+		@NamedQuery(name = "find_by_name", query = "FROM Author a WHERE a.firstName = :first_name and a.lastName = :last_name")
+})
 @Entity
 public class Author {
 

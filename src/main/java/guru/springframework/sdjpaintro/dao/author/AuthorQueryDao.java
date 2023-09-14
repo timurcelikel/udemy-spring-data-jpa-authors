@@ -10,5 +10,9 @@ public interface AuthorQueryDao extends AuthorDao {
 
 	Author getByIdTypedQuery(Long id);
 
+	Author findAuthorByNameNative(String firstName, String lastName);
+
+	Author findAuthorByNameCriteria(String firstName, String lastName);
+
 	List<Author> findAll();
 }

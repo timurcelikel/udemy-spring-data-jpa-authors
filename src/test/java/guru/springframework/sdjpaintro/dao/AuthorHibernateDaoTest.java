@@ -28,6 +28,20 @@ public class AuthorHibernateDaoTest {
 	AuthorQueryDao authorHibernateQueryDao;
 
 	@Test
+	void testFindAuthorByNameNative() {
+
+		Author author = authorHibernateQueryDao.findAuthorByNameNative("John", "Steinbeck");
+		assertThat(author).isNotNull();
+	}
+
+	@Test
+	void testFindAuthorByNameCriteria() {
+
+		Author author = authorHibernateQueryDao.findAuthorByNameCriteria("John", "Steinbeck");
+		assertThat(author).isNotNull();
+	}
+
+	@Test
 	void testFindAllNamedQuery() {
 
 		List<Author> author = authorHibernateQueryDao.findAll();
