@@ -14,7 +14,7 @@ values ('978-1617297571', 'Simon & Schuster',
         'Spring in Action, 6th Edition', (select id from author where first_name = 'Craig' and last_name = 'Walls'));
 
 insert into author (first_name, last_name)
-values ('Eric', 'Evans');
+values ('John', 'Evans');
 
 insert into book (isbn, publisher, title, author_id)
 values ('978-0321125217', 'Addison Wesley',

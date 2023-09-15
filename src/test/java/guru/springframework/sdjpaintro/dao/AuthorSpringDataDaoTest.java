@@ -11,8 +11,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
@@ -23,6 +27,35 @@ public class AuthorSpringDataDaoTest {
 
 	@Autowired
 	private AuthorSpringDataDaoImpl authorSpringDataDaoImpl;
+
+	@Test
+	void testFindAuthorByFirstAndLastNameWithNativeQuery() {
+
+		Author author = authorSpringDataDaoImpl.findAuthorByFirstAndLastNameNativeQuery("John", "Steinbeck");
+		assertNotNull(author);
+	}
+
+	@Test
+	void testFindAuthorByLastNameWithNamedQueryAnnotation() {
+
+		Author author = authorSpringDataDaoImpl.findAuthorByLastNameWithNamedQuery("Steinbeck");
+		assertNotNull(author);
+	}
+
+	@Test
+	void testFindAuthorByFirstNameWithQueryAnnotation() {
+
+		Author author = authorSpringDataDaoImpl.findAuthorByFirstNameWithQuery("Robert");
+		assertNotNull(author);
+	}
+
+	@Test
+	void testQueryByFirstName() throws ExecutionException, InterruptedException {
+
+		Future<Author> futureAuthor = authorSpringDataDaoImpl.queryByFirstName("Robert");
+		Author author = futureAuthor.get();
+		assertNotNull(author);
+	}
 
 	@Test
 	void testFindAuthorById() {
@@ -44,6 +77,21 @@ public class AuthorSpringDataDaoTest {
 		assertThrows(EntityNotFoundException.class, () -> {
 			authorSpringDataDaoImpl.findAuthorByName("John", "Helmbeck");
 		});
+	}
+
+	@Test
+	void testFindAllAuthorsByFirstName() {
+
+		List<Author> authors = authorSpringDataDaoImpl.findAllAuthorsByFirstName("John").toList();
+		assertThat(authors.size()).isEqualTo(2);
+	}
+
+	@Test
+	void testFindAllAuthorsByFirstNameCount() {
+
+		AtomicInteger count = new AtomicInteger();
+		authorSpringDataDaoImpl.findAllAuthorsByFirstName("John").forEach(row -> count.getAndIncrement());
+		assertThat(count.get()).isEqualTo(2);
 	}
 
 	@Test
