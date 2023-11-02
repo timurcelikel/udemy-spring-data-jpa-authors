@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.dao.author;
+package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.domain.Author;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class AuthorSpringJdbcTemplateDaoImpl implements AuthorDao {
+public class AuthorSpringJdbcTemplateServiceImpl implements AuthorDao {
 
 	private final JdbcTemplate jdbcTemplate;
 
-	public AuthorSpringJdbcTemplateDaoImpl(final JdbcTemplate jdbcTemplate) {
+	public AuthorSpringJdbcTemplateServiceImpl(final JdbcTemplate jdbcTemplate) {
 
 		this.jdbcTemplate = jdbcTemplate;
 	}
@@ -26,8 +26,11 @@ public class AuthorSpringJdbcTemplateDaoImpl implements AuthorDao {
 	@Override
 	public Author getById(final Long id) {
 
-		String sql = "select author.id as id, first_name, last_name, book.id as book_id, book.isbn, book.publisher, book.title from author\n" +
-				"left outer join book on author.id = book.author_id where author.id = ?";
+		String sql =
+				"select author.id as id, first_name, last_name, book.id as book_id, book.isbn, book.publisher, book"
+						+ ".title from author\n"
+						+
+						"left outer join book on author.id = book.author_id where author.id = ?";
 
 		return jdbcTemplate.query(sql, new AuthorExtractor(), id);
 	}
@@ -35,7 +38,8 @@ public class AuthorSpringJdbcTemplateDaoImpl implements AuthorDao {
 	@Override
 	public Author findAuthorByName(final String firstName, final String lastName) {
 
-		return jdbcTemplate.queryForObject("SELECT * FROM author where first_name = ? and last_name = ?", getRowMapper(), firstName, lastName);
+		return jdbcTemplate.queryForObject("SELECT * FROM author where first_name = ? and last_name = ?",
+				getRowMapper(), firstName, lastName);
 	}
 
 	@Override
@@ -51,7 +55,8 @@ public class AuthorSpringJdbcTemplateDaoImpl implements AuthorDao {
 	@Override
 	public Author updateAuthor(final Author author) {
 
-		jdbcTemplate.update("UPDATE author set first_name = ?, last_name = ? where id = ?", author.getFirstName(), author.getLastName(),
+		jdbcTemplate.update("UPDATE author set first_name = ?, last_name = ? where id = ?", author.getFirstName(),
+				author.getLastName(),
 				author.getId());
 		return this.getById(author.getId());
 	}

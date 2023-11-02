@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.dao.author;
+package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.domain.Author;
 

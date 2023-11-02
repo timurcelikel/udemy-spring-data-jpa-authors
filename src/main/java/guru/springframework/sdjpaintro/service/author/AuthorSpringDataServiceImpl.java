@@ -1,20 +1,19 @@
-package guru.springframework.sdjpaintro.dao.author;
+package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.domain.Author;
 import guru.springframework.sdjpaintro.repositories.AuthorRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.stream.Stream;
 
-@Component
-public class AuthorSpringDataDaoImpl implements AuthorDao {
+@Service
+public class AuthorSpringDataServiceImpl implements AuthorDao {
 
 	private final AuthorRepository authorRepository;
 
-	public AuthorSpringDataDaoImpl(final AuthorRepository authorRepository) {
+	public AuthorSpringDataServiceImpl(final AuthorRepository authorRepository) {
 
 		this.authorRepository = authorRepository;
 	}
@@ -53,10 +52,11 @@ public class AuthorSpringDataDaoImpl implements AuthorDao {
 	@Override
 	public Author findAuthorByName(final String firstName, final String lastName) {
 
-		return authorRepository.findAuthorByFirstNameAndLastName(firstName, lastName).orElseThrow(EntityNotFoundException::new);
+		return authorRepository.findAuthorByFirstNameAndLastName(firstName, lastName).orElseThrow(
+				EntityNotFoundException::new);
 	}
 
-	public Stream<Author> findAllAuthorsByFirstName(final String firstName) {
+	public List<Author> findAllAuthorsByFirstName(final String firstName) {
 
 		return authorRepository.findAllByFirstName(firstName);
 	}

@@ -8,12 +8,14 @@ import guru.springframework.sdjpaintro.repositories.AuthorRepository;
 import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
 import guru.springframework.sdjpaintro.repositories.BookUuidRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile({ "local", "default" })
+@Profile({ "test" })
 @Component
+@Slf4j
 public class DataInitializer implements CommandLineRunner {
 
 	private final BookRepository bookRepository;
@@ -42,32 +44,31 @@ public class DataInitializer implements CommandLineRunner {
 		authorUuidRepository.deleteAll();
 		bookUuidRepository.deleteAll();
 
-		Book bookDDD = new Book("Domain Driven Design", "123", "RandomHouse", null);
+		Book bookDDD = Book.builder().title("Domain Driven Design").isbn("123").publisher("Random House").build();
 		bookRepository.save(bookDDD);
 
-		Book bookSIA = new Book("Spring In Action", "232424", "Oreilly", null);
+		Book bookSIA = Book.builder().title("Spring In Action").isbn("23424").publisher("Oreilly").build();
 		bookRepository.save(bookSIA);
 
 		bookRepository.findAll().forEach(book -> {
-			System.out.println("Book Id: " + book.getId());
-			System.out.println("Book Title: " + book.getTitle());
+			log.info("Book Id: " + book.getId());
+			log.info("Book Title: " + book.getTitle());
 		});
 
-		Author author = new Author();
-		author.setFirstName("John");
-		author.setLastName("Steinbeck");
+		Author author = Author.builder().firstName("John").lastName("Steinbeck").build();
 		authorRepository.save(author);
 
-		AuthorUuid authorUuid = new AuthorUuid();
-		authorUuid.setFirstName("Joe");
-		authorUuid.setLastName("Buck");
+		Author author2 = Author.builder().firstName("Robert").lastName("Martin").build();
+		authorRepository.save(author2);
+
+		AuthorUuid authorUuid = AuthorUuid.builder().firstName("Joe").lastName("Buck").build();
 		AuthorUuid savedAuthor = authorUuidRepository.save(authorUuid);
-		System.out.println("Saved Author UUID: " + savedAuthor.getId());
+		log.info("Saved Author UUID: " + savedAuthor.getId());
 
 		BookUuid bookUuid = new BookUuid();
 		bookUuid.setIsbn("1243434353");
 		bookUuid.setTitle("East of Eden");
 		BookUuid savedBook = bookUuidRepository.save(bookUuid);
-		System.out.println("Saved Book UUID: " + savedBook.getId());
+		log.info("Saved Book UUID: " + savedBook.getId());
 	}
 }

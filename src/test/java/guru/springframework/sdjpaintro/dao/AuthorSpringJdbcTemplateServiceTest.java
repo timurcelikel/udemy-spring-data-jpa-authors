@@ -1,14 +1,14 @@
 package guru.springframework.sdjpaintro.dao;
 
-import guru.springframework.sdjpaintro.dao.author.AuthorDao;
-import guru.springframework.sdjpaintro.dao.author.AuthorSpringJdbcTemplateDaoImpl;
 import guru.springframework.sdjpaintro.domain.Author;
+import guru.springframework.sdjpaintro.service.author.AuthorDao;
+import guru.springframework.sdjpaintro.service.author.AuthorSpringJdbcTemplateServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.TransientDataAccessResourceException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -17,10 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
-@DataJpaTest
-@Import(AuthorSpringJdbcTemplateDaoImpl.class)
+@SpringBootTest
+@Import(AuthorSpringJdbcTemplateServiceImpl.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class AuthorSpringJdbcTemplateDaoTest {
+public class AuthorSpringJdbcTemplateServiceTest {
 
 	@Autowired
 	AuthorDao authorSpringJdbcTemplateDao;
@@ -89,7 +89,7 @@ public class AuthorSpringJdbcTemplateDaoTest {
 
 		authorSpringJdbcTemplateDao.deleteAuthorById(savedAuthor.getId());
 
-		assertThrows(TransientDataAccessResourceException.class, () -> {
+		assertThrows(DataIntegrityViolationException.class, () -> {
 			authorSpringJdbcTemplateDao.getById(savedAuthor.getId());
 		});
 	}

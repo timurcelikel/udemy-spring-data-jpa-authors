@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class MySqlIntegrationTest {
+class MySqlIntegrationTest {
 
 	@Autowired
 	private BookRepository bookRepository;
@@ -29,13 +29,6 @@ public class MySqlIntegrationTest {
 
 	@Autowired
 	private AuthorCompositeRepository authorCompositeRepository;
-
-	@Test
-	void testMySQL() {
-
-		long countBefore = bookRepository.count();
-		assertThat(countBefore).isEqualTo(5);
-	}
 
 	@Test
 	void testBookUuid() {

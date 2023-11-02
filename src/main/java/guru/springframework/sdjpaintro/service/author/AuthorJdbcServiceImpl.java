@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.dao.author;
+package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.domain.Author;
 import org.springframework.stereotype.Component;
@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class AuthorJdbcDaoImpl implements AuthorDao {
+public class AuthorJdbcServiceImpl implements AuthorDao {
 
 	private final DataSource dataSource;
 
-	public AuthorJdbcDaoImpl(final DataSource dataSource) {
+	public AuthorJdbcServiceImpl(final DataSource dataSource) {
 
 		this.dataSource = dataSource;
 	}
@@ -208,7 +208,8 @@ public class AuthorJdbcDaoImpl implements AuthorDao {
 		return author;
 	}
 
-	private void closeAll(final ResultSet resultSet, final PreparedStatement ps, final Connection connection) throws SQLException {
+	private void closeAll(final ResultSet resultSet, final PreparedStatement ps, final Connection connection)
+			throws SQLException {
 
 		if (resultSet != null) {
 			resultSet.close();

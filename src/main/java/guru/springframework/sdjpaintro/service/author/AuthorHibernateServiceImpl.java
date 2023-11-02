@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.dao.author;
+package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.domain.Author;
 import jakarta.persistence.EntityManager;
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class AuthorHibernateDaoImpl implements AuthorDao, AuthorQueryDao {
+public class AuthorHibernateServiceImpl implements AuthorDao, AuthorQueryService {
 
 	private final EntityManagerFactory entityManagerFactory;
 
-	public AuthorHibernateDaoImpl(final EntityManagerFactory entityManagerFactory) {
+	public AuthorHibernateServiceImpl(final EntityManagerFactory entityManagerFactory) {
 
 		this.entityManagerFactory = entityManagerFactory;
 	}
@@ -24,7 +24,8 @@ public class AuthorHibernateDaoImpl implements AuthorDao, AuthorQueryDao {
 	public Author findAuthorByNameNative(String firstName, String lastName) {
 
 		try (EntityManager em = getEntityManager()) {
-			Query query = em.createNativeQuery("SELECT * FROM author a WHERE a.first_name = ? and a.last_name = ?", Author.class);
+			Query query = em.createNativeQuery("SELECT * FROM author a WHERE a.first_name = ? and a.last_name = ?",
+					Author.class);
 			query.setParameter(1, firstName);
 			query.setParameter(2, lastName);
 			return (Author) query.getSingleResult();
@@ -108,7 +109,8 @@ public class AuthorHibernateDaoImpl implements AuthorDao, AuthorQueryDao {
 	public Author getById(final Long id) {
 
 		EntityManager em = getEntityManager();
-		// Here we are working with the JPA entities and we are asking Hibernate to create a query for an Author with the passed in id.
+		// Here we are working with the JPA entities and we are asking Hibernate to create a query for an Author with
+		// the passed in id.
 		Author author = em.find(Author.class, id);
 		em.close();
 		return author;
@@ -120,7 +122,8 @@ public class AuthorHibernateDaoImpl implements AuthorDao, AuthorQueryDao {
 		EntityManager em = getEntityManager();
 
 		// Hibernate JQL with a TypedQuery
-		//TypedQuery<Author> query = em.createQuery("SELECT a FROM Author a WHERE a.firstName = :first_name and a.lastName = "
+		//TypedQuery<Author> query = em.createQuery("SELECT a FROM Author a WHERE a.firstName = :first_name and a
+		// .lastName = "
 		//		+ ":last_name", Author.class);
 
 		// We use the NamedQuery on the Author entity instead of JQL
@@ -137,7 +140,8 @@ public class AuthorHibernateDaoImpl implements AuthorDao, AuthorQueryDao {
 	@Override
 	public Author saveAuthor(final Author author) {
 
-		EntityManager em = getEntityManager();            // We are getting an EntityManager which gives us a connection to the db
+		EntityManager em =
+				getEntityManager();            // We are getting an EntityManager which gives us a connection to the db
 		em.getTransaction().begin();                      // Start the transaction
 		em.persist(author);                               // Save it
 		em.flush();                                       // Flush it to the db
