@@ -66,6 +66,13 @@ class AuthorSpringDataServiceTest {
 	}
 
 	@Test
+	void testFindAllByFirstName() {
+
+		List<Author> authors = authorSpringDataServiceImpl.findAllByFirstName("John");
+		assertThat(authors).hasSize(1);
+	}
+
+	@Test
 	void testFindAuthorByNameNotFound() {
 
 		assertThrows(EntityNotFoundException.class, () -> {

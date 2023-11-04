@@ -45,9 +45,9 @@ class AuthorHibernateServiceTest {
 	@Test
 	void testFindAllNamedQuery() {
 
-		List<Author> author = authorHibernateQueryDao.findAll();
-		assertThat(author).isNotNull();
-		assertThat(author.size()).isGreaterThan(0);
+		List<Author> authors = authorHibernateQueryDao.findAll();
+		assertThat(authors).isNotNull();
+		assertThat(authors.size()).isGreaterThan(0);
 	}
 
 	@Test

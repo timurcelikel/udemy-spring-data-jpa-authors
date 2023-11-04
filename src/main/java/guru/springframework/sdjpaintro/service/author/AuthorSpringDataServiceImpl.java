@@ -88,4 +88,8 @@ public class AuthorSpringDataServiceImpl implements AuthorDao {
 
 		return null;
 	}
+
+	public List<Author> findAllByFirstName(final String firstName) {
+		return authorRepository.findAllByFirstName(firstName);
+	}
 }
