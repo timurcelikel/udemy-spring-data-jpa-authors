@@ -1,6 +1,6 @@
 package guru.springframework.sdjpaintro.service.author;
 
-import guru.springframework.sdjpaintro.domain.Author;
+import guru.springframework.sdjpaintro.entity.Author;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 

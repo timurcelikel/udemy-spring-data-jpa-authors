@@ -1,6 +1,6 @@
 package guru.springframework.sdjpaintro.repositories;
 
-import guru.springframework.sdjpaintro.domain.AuthorUuid;
+import guru.springframework.sdjpaintro.entity.AuthorUuid;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

@@ -1,8 +1,8 @@
-package guru.springframework.sdjpaintro.dao;
+package guru.springframework.sdjpaintro.service;
 
-import guru.springframework.sdjpaintro.domain.Author;
-import guru.springframework.sdjpaintro.service.author.AuthorDao;
-import guru.springframework.sdjpaintro.service.author.AuthorJdbcServiceImpl;
+import guru.springframework.sdjpaintro.entity.Author;
+import guru.springframework.sdjpaintro.service.author.AuthorService;
+import guru.springframework.sdjpaintro.service.author.impl.AuthorJdbcServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AuthorJdbcServiceTest {
 
 	@Autowired
-	AuthorDao authorJdbcDao;
+	AuthorService authorJdbcDao;
 
 	@Test
 	void testFindAuthorsByLastNameLike() {

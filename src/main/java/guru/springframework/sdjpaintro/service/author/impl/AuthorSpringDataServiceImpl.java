@@ -1,7 +1,8 @@
-package guru.springframework.sdjpaintro.service.author;
+package guru.springframework.sdjpaintro.service.author.impl;
 
-import guru.springframework.sdjpaintro.domain.Author;
+import guru.springframework.sdjpaintro.entity.Author;
 import guru.springframework.sdjpaintro.repositories.AuthorRepository;
+import guru.springframework.sdjpaintro.service.author.AuthorService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 @Service
-public class AuthorSpringDataServiceImpl implements AuthorDao {
+public class AuthorSpringDataServiceImpl implements AuthorService {
 
 	private final AuthorRepository authorRepository;
 

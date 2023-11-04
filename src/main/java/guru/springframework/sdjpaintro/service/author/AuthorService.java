@@ -1,10 +1,10 @@
 package guru.springframework.sdjpaintro.service.author;
 
-import guru.springframework.sdjpaintro.domain.Author;
+import guru.springframework.sdjpaintro.entity.Author;
 
 import java.util.List;
 
-public interface AuthorDao {
+public interface AuthorService {
 
 	Author getById(Long id);
 

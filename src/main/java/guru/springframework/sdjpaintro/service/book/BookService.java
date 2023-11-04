@@ -1,8 +1,12 @@
 package guru.springframework.sdjpaintro.service.book;
 
-import guru.springframework.sdjpaintro.domain.Book;
+import guru.springframework.sdjpaintro.entity.Book;
+
+import java.util.List;
 
 public interface BookService {
+
+	List<Book> findAllBooks();
 
 	Book getById(Long id);
 

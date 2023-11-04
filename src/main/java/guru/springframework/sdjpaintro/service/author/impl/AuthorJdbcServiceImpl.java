@@ -1,6 +1,7 @@
-package guru.springframework.sdjpaintro.service.author;
+package guru.springframework.sdjpaintro.service.author.impl;
 
-import guru.springframework.sdjpaintro.domain.Author;
+import guru.springframework.sdjpaintro.entity.Author;
+import guru.springframework.sdjpaintro.service.author.AuthorService;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class AuthorJdbcServiceImpl implements AuthorDao {
+public class AuthorJdbcServiceImpl implements AuthorService {
 
 	private final DataSource dataSource;
 

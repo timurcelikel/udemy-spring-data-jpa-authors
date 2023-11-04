@@ -1,9 +1,9 @@
 package guru.springframework.sdjpaintro.bootstrap;
 
-import guru.springframework.sdjpaintro.domain.Author;
-import guru.springframework.sdjpaintro.domain.AuthorUuid;
-import guru.springframework.sdjpaintro.domain.Book;
-import guru.springframework.sdjpaintro.domain.BookUuid;
+import guru.springframework.sdjpaintro.entity.Author;
+import guru.springframework.sdjpaintro.entity.AuthorUuid;
+import guru.springframework.sdjpaintro.entity.Book;
+import guru.springframework.sdjpaintro.entity.BookUuid;
 import guru.springframework.sdjpaintro.repositories.AuthorRepository;
 import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
 import guru.springframework.sdjpaintro.repositories.BookRepository;

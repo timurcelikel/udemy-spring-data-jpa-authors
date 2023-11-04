@@ -1,6 +1,9 @@
-package guru.springframework.sdjpaintro.service.author;
+package guru.springframework.sdjpaintro.service.author.impl;
 
-import guru.springframework.sdjpaintro.domain.Author;
+import guru.springframework.sdjpaintro.entity.Author;
+import guru.springframework.sdjpaintro.service.author.AuthorExtractor;
+import guru.springframework.sdjpaintro.service.author.AuthorMapper;
+import guru.springframework.sdjpaintro.service.author.AuthorService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -8,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class AuthorSpringJdbcTemplateServiceImpl implements AuthorDao {
+public class AuthorSpringJdbcTemplateServiceImpl implements AuthorService {
 
 	private final JdbcTemplate jdbcTemplate;
 

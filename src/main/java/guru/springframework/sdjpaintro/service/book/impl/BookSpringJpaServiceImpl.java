@@ -1,18 +1,26 @@
-package guru.springframework.sdjpaintro.service.book;
+package guru.springframework.sdjpaintro.service.book.impl;
 
-import guru.springframework.sdjpaintro.domain.Book;
+import guru.springframework.sdjpaintro.entity.Book;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
+import guru.springframework.sdjpaintro.service.book.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class BookServiceImpl implements BookService {
+import java.util.List;
+
+@Service
+public class BookSpringJpaServiceImpl implements BookService {
 
 	private final BookRepository bookRepository;
 
-	public BookServiceImpl(BookRepository bookRepository) {
+	public BookSpringJpaServiceImpl(BookRepository bookRepository) {
 		this.bookRepository = bookRepository;
+	}
+
+	@Override
+	public List<Book> findAllBooks() {
+		return null;
 	}
 
 	@Override

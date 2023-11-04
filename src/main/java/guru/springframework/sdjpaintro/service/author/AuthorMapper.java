@@ -1,7 +1,7 @@
 package guru.springframework.sdjpaintro.service.author;
 
-import guru.springframework.sdjpaintro.domain.Author;
-import guru.springframework.sdjpaintro.domain.Book;
+import guru.springframework.sdjpaintro.entity.Author;
+import guru.springframework.sdjpaintro.entity.Book;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

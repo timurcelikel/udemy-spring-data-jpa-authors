@@ -1,29 +1,25 @@
-package guru.springframework.sdjpaintro.dao;
+package guru.springframework.sdjpaintro.service;
 
-import guru.springframework.sdjpaintro.domain.Author;
-import guru.springframework.sdjpaintro.service.author.AuthorDao;
-import guru.springframework.sdjpaintro.service.author.AuthorHibernateServiceImpl;
+import guru.springframework.sdjpaintro.entity.Author;
 import guru.springframework.sdjpaintro.service.author.AuthorQueryService;
-import org.junit.jupiter.api.Disabled;
+import guru.springframework.sdjpaintro.service.author.AuthorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test") // See note in sublime notes around why this annotation and conditional annotations could be bad
+@ActiveProfiles("test")
 @SpringBootTest
-@Import(AuthorHibernateServiceImpl.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AuthorHibernateServiceTest {
 
 	@Autowired
-	AuthorDao authorHibernateDao;
+	AuthorService authorHibernateDao;
 
 	@Autowired
 	AuthorQueryService authorHibernateQueryDao;
@@ -75,7 +71,6 @@ class AuthorHibernateServiceTest {
 	}
 
 	@Test
-	@Disabled
 	void testGetAuthorById() {
 
 		Author author = authorHibernateDao.getById(2L);

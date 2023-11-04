@@ -1,6 +1,8 @@
-package guru.springframework.sdjpaintro.service.author;
+package guru.springframework.sdjpaintro.service.author.impl;
 
-import guru.springframework.sdjpaintro.domain.Author;
+import guru.springframework.sdjpaintro.entity.Author;
+import guru.springframework.sdjpaintro.service.author.AuthorQueryService;
+import guru.springframework.sdjpaintro.service.author.AuthorService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class AuthorHibernateServiceImpl implements AuthorDao, AuthorQueryService {
+public class AuthorHibernateServiceImpl implements AuthorService, AuthorQueryService {
 
 	private final EntityManagerFactory entityManagerFactory;
 

@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.domain;
+package guru.springframework.sdjpaintro.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

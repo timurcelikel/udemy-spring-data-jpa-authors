@@ -1,6 +1,6 @@
 package guru.springframework.sdjpaintro;
 
-import guru.springframework.sdjpaintro.domain.*;
+import guru.springframework.sdjpaintro.entity.*;
 import guru.springframework.sdjpaintro.repositories.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

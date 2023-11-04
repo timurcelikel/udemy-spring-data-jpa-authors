@@ -1,7 +1,7 @@
-package guru.springframework.sdjpaintro.dao;
+package guru.springframework.sdjpaintro.service;
 
-import guru.springframework.sdjpaintro.domain.Author;
-import guru.springframework.sdjpaintro.service.author.AuthorSpringDataServiceImpl;
+import guru.springframework.sdjpaintro.entity.Author;
+import guru.springframework.sdjpaintro.service.author.impl.AuthorSpringDataServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
