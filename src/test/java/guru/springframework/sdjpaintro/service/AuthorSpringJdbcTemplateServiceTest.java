@@ -1,14 +1,16 @@
 package guru.springframework.sdjpaintro.service;
 
 import guru.springframework.sdjpaintro.entity.Author;
+import guru.springframework.sdjpaintro.repositories.AuthorRepository;
 import guru.springframework.sdjpaintro.service.author.AuthorService;
 import guru.springframework.sdjpaintro.service.author.impl.AuthorSpringJdbcTemplateServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -19,11 +21,26 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ActiveProfiles("test")
 @SpringBootTest
 @Import(AuthorSpringJdbcTemplateServiceImpl.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class AuthorSpringJdbcTemplateServiceTest {
+class AuthorSpringJdbcTemplateServiceTest {
 
 	@Autowired
 	AuthorService authorSpringJdbcTemplateDao;
+
+	@Autowired
+	AuthorRepository authorRepository;
+
+	@Test
+	void testFindAuthorsByLastNameOrderByFirstName() {
+
+		Author author = Author.builder().firstName("Jorge").lastName("Steinbeck").build();
+		authorRepository.save(author);
+
+		List<Author> authors = authorSpringJdbcTemplateDao.findAllAuthorsByLastNameSortByFirstName("Steinbeck",
+				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("first_name"))));
+		assertThat(authors).isNotNull().hasSize(2);
+		assertThat(authors.get(0).getFirstName()).isEqualTo("John");
+		assertThat(authors.get(1).getFirstName()).isEqualTo("Jorge");
+	}
 
 	@Test
 	void testFindAuthorsByLastNameLike() {

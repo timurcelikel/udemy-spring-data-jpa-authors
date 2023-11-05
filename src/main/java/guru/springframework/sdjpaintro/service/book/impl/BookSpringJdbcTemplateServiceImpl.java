@@ -3,6 +3,7 @@ package guru.springframework.sdjpaintro.service.book.impl;
 import guru.springframework.sdjpaintro.entity.Book;
 import guru.springframework.sdjpaintro.service.book.BookMapper;
 import guru.springframework.sdjpaintro.service.book.BookService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,25 @@ public class BookSpringJdbcTemplateServiceImpl implements BookService {
 
 	public BookSpringJdbcTemplateServiceImpl(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	@Override
+	public List<Book> findAllBooksSortByTitle(final Pageable pageable) {
+		String sql =
+				"SELECT * from book order by title " + pageable.getSort().getOrderFor("title").getDirection().name()
+						+ " limit ? offset ?";
+		return jdbcTemplate.query(sql, getBookMapper(), pageable.getPageSize(), pageable.getOffset());
+	}
+
+	@Override
+	public List<Book> findAllBooks(final Pageable pageable) {
+		return jdbcTemplate.query("SELECT * from book limit ? offset ?", getBookMapper(), pageable.getPageSize(),
+				pageable.getOffset());
+	}
+
+	@Override
+	public List<Book> findAllBooks(final int pageSize, final int offset) {
+		return jdbcTemplate.query("SELECT * from book limit ? offset ?", getBookMapper(), pageSize, offset);
 	}
 
 	@Override

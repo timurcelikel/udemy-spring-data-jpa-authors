@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -105,6 +106,11 @@ public class AuthorHibernateServiceImpl implements AuthorService, AuthorQuerySer
 		Author author = query.getSingleResult();        // Typed Query does not require casting
 		em.close();
 		return author;
+	}
+
+	@Override
+	public List<Author> findAllAuthorsByLastNameSortByFirstName(final String lastName, final Pageable pageable) {
+		return null;
 	}
 
 	@Override

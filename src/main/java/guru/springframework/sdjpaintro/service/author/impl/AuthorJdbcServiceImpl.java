@@ -2,6 +2,7 @@ package guru.springframework.sdjpaintro.service.author.impl;
 
 import guru.springframework.sdjpaintro.entity.Author;
 import guru.springframework.sdjpaintro.service.author.AuthorService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -48,6 +49,11 @@ public class AuthorJdbcServiceImpl implements AuthorService {
 				e.printStackTrace();
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public List<Author> findAllAuthorsByLastNameSortByFirstName(final String lastName, final Pageable pageable) {
 		return null;
 	}
 

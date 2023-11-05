@@ -4,6 +4,7 @@ import guru.springframework.sdjpaintro.entity.Author;
 import guru.springframework.sdjpaintro.repositories.AuthorRepository;
 import guru.springframework.sdjpaintro.service.author.AuthorService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public class AuthorSpringDataServiceImpl implements AuthorService {
 	public AuthorSpringDataServiceImpl(final AuthorRepository authorRepository) {
 
 		this.authorRepository = authorRepository;
+	}
+
+	@Override
+	public List<Author> findAllAuthorsByLastNameSortByFirstName(final String lastName, final Pageable pageable) {
+		return null;
 	}
 
 	@Override

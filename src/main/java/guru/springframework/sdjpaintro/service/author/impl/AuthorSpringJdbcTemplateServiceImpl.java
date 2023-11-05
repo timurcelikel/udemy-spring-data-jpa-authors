@@ -4,6 +4,7 @@ import guru.springframework.sdjpaintro.entity.Author;
 import guru.springframework.sdjpaintro.service.author.AuthorExtractor;
 import guru.springframework.sdjpaintro.service.author.AuthorMapper;
 import guru.springframework.sdjpaintro.service.author.AuthorService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,15 @@ public class AuthorSpringJdbcTemplateServiceImpl implements AuthorService {
 	}
 
 	@Override
+	public List<Author> findAllAuthorsByLastNameSortByFirstName(final String lastName, final Pageable pageable) {
+		String sql =
+				"SELECT * from author where last_name = ? order by first_name " + pageable.getSort().getOrderFor(
+						"first_name").getDirection().name()
+						+ " limit ? offset ?";
+		return jdbcTemplate.query(sql, getRowMapper(), lastName, pageable.getPageSize(), pageable.getOffset());
+	}
+
+	@Override
 	public List<Author> listAuthorByLastNameLike(final String lastName) {
 
 		return jdbcTemplate.query("SELECT * FROM author where last_name like ?", getRowMapper(), lastName + "%");
@@ -32,8 +42,7 @@ public class AuthorSpringJdbcTemplateServiceImpl implements AuthorService {
 		String sql =
 				"select author.id as id, first_name, last_name, book.id as book_id, book.isbn, book.publisher, book"
 						+ ".title from author\n"
-						+
-						"left outer join book on author.id = book.author_id where author.id = ?";
+						+ "left outer join book on author.id = book.author_id where author.id = ?";
 
 		return jdbcTemplate.query(sql, new AuthorExtractor(), id);
 	}
