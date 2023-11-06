@@ -1,11 +1,11 @@
-package guru.springframework.sdjpaintro.service;
+package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.entity.Author;
-import guru.springframework.sdjpaintro.service.author.AuthorQueryService;
-import guru.springframework.sdjpaintro.service.author.AuthorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest
-		//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AuthorHibernateServiceTest {
 
 	@Autowired
@@ -22,6 +21,34 @@ class AuthorHibernateServiceTest {
 
 	@Autowired
 	AuthorQueryService authorHibernateQueryDao;
+
+	@Test
+	void testFindAuthorsByLastNameOrderByFirstNameAscending() {
+
+		Author author = Author.builder().firstName("Jorge").lastName("Steinbeck").build();
+		authorHibernateQueryDao.saveAuthor(author);
+
+		List<Author> authors = authorHibernateQueryDao.findAllAuthorsByLastName("Steinbeck",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("firstName"))));
+		assertThat(authors).isNotNull().hasSize(2);
+		assertThat(authors.get(0).getFirstName()).isEqualTo("John");
+		assertThat(authors.get(1).getFirstName()).isEqualTo("Jorge");
+		authorHibernateQueryDao.deleteAuthorById(author.getId());
+	}
+
+	@Test
+	void testFindAuthorsByLastNameOrderByFirstNameDescending() {
+
+		Author author = Author.builder().firstName("Jorge").lastName("Steinbeck").build();
+		authorHibernateQueryDao.saveAuthor(author);
+
+		List<Author> authors = authorHibernateQueryDao.findAllAuthorsByLastName("Steinbeck",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.desc("firstName"))));
+		assertThat(authors).isNotNull().hasSize(2);
+		assertThat(authors.get(0).getFirstName()).isEqualTo("Jorge");
+		assertThat(authors.get(1).getFirstName()).isEqualTo("John");
+		authorHibernateQueryDao.deleteAuthorById(author.getId());
+	}
 
 	@Test
 	void testFindAuthorByNameNative() {

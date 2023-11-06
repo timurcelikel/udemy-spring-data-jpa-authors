@@ -1,13 +1,10 @@
-package guru.springframework.sdjpaintro.service;
+package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.entity.Author;
 import guru.springframework.sdjpaintro.repositories.AuthorRepository;
-import guru.springframework.sdjpaintro.service.author.AuthorService;
-import guru.springframework.sdjpaintro.service.author.impl.AuthorSpringJdbcTemplateServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
 @SpringBootTest
-@Import(AuthorSpringJdbcTemplateServiceImpl.class)
 class AuthorSpringJdbcTemplateServiceTest {
 
 	@Autowired
@@ -30,16 +26,31 @@ class AuthorSpringJdbcTemplateServiceTest {
 	AuthorRepository authorRepository;
 
 	@Test
-	void testFindAuthorsByLastNameOrderByFirstName() {
+	void testFindAuthorsByLastNameOrderByFirstNameAscending() {
 
 		Author author = Author.builder().firstName("Jorge").lastName("Steinbeck").build();
 		authorRepository.save(author);
 
-		List<Author> authors = authorSpringJdbcTemplateDao.findAllAuthorsByLastNameSortByFirstName("Steinbeck",
-				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("first_name"))));
+		List<Author> authors = authorSpringJdbcTemplateDao.findAllAuthorsByLastName("Steinbeck",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.asc("firstName"))));
 		assertThat(authors).isNotNull().hasSize(2);
 		assertThat(authors.get(0).getFirstName()).isEqualTo("John");
 		assertThat(authors.get(1).getFirstName()).isEqualTo("Jorge");
+		authorRepository.deleteById(author.getId());
+	}
+
+	@Test
+	void testFindAuthorsByLastNameOrderByFirstNameDescending() {
+
+		Author author = Author.builder().firstName("Jorge").lastName("Steinbeck").build();
+		authorRepository.save(author);
+
+		List<Author> authors = authorSpringJdbcTemplateDao.findAllAuthorsByLastName("Steinbeck",
+			PageRequest.of(0, 10, Sort.by(Sort.Order.desc("firstName"))));
+		assertThat(authors).isNotNull().hasSize(2);
+		assertThat(authors.get(0).getFirstName()).isEqualTo("Jorge");
+		assertThat(authors.get(1).getFirstName()).isEqualTo("John");
+		authorRepository.deleteById(author.getId());
 	}
 
 	@Test

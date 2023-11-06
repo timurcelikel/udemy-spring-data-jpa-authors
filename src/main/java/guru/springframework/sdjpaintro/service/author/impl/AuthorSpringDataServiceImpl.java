@@ -21,7 +21,7 @@ public class AuthorSpringDataServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public List<Author> findAllAuthorsByLastNameSortByFirstName(final String lastName, final Pageable pageable) {
+	public List<Author> findAllAuthorsByLastName(final String lastName, final Pageable pageable) {
 		return null;
 	}
 

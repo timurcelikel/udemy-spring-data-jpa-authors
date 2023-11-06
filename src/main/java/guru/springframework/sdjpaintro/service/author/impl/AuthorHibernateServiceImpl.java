@@ -24,11 +24,31 @@ public class AuthorHibernateServiceImpl implements AuthorService, AuthorQuerySer
 	}
 
 	@Override
+	public List<Author> findAllAuthorsByLastName(final String lastName, final Pageable pageable) {
+		EntityManager em = getEntityManager();
+		StringBuilder hql = new StringBuilder();
+		try {
+			hql.append("SELECT a FROM Author a where a.lastName = :lastName ");
+			if (pageable.getSort().getOrderFor("firstName") != null) {
+				hql.append(
+					" order by a.firstName " + pageable.getSort().getOrderFor("firstName").getDirection().name());
+			}
+			TypedQuery<Author> query = em.createQuery(hql.toString(), Author.class);
+			query.setParameter("lastName", lastName);
+			query.setFirstResult(Math.toIntExact((pageable.getOffset())));
+			query.setMaxResults(pageable.getPageSize());
+			return query.getResultList();
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
 	public Author findAuthorByNameNative(String firstName, String lastName) {
 
 		try (EntityManager em = getEntityManager()) {
 			Query query = em.createNativeQuery("SELECT * FROM author a WHERE a.first_name = ? and a.last_name = ?",
-					Author.class);
+				Author.class);
 			query.setParameter(1, firstName);
 			query.setParameter(2, lastName);
 			return (Author) query.getSingleResult();
@@ -109,11 +129,6 @@ public class AuthorHibernateServiceImpl implements AuthorService, AuthorQuerySer
 	}
 
 	@Override
-	public List<Author> findAllAuthorsByLastNameSortByFirstName(final String lastName, final Pageable pageable) {
-		return null;
-	}
-
-	@Override
 	public Author getById(final Long id) {
 
 		EntityManager em = getEntityManager();
@@ -149,7 +164,7 @@ public class AuthorHibernateServiceImpl implements AuthorService, AuthorQuerySer
 	public Author saveAuthor(final Author author) {
 
 		EntityManager em =
-				getEntityManager();            // We are getting an EntityManager which gives us a connection to the db
+			getEntityManager();            // We are getting an EntityManager which gives us a connection to the db
 		em.getTransaction().begin();                      // Start the transaction
 		em.persist(author);                               // Save it
 		em.flush();                                       // Flush it to the db

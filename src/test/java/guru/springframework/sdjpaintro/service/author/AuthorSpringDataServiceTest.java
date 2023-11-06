@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.service;
+package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.entity.Author;
 import guru.springframework.sdjpaintro.service.author.impl.AuthorSpringDataServiceImpl;

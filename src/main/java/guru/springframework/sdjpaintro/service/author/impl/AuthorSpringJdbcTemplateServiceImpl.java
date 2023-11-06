@@ -22,12 +22,15 @@ public class AuthorSpringJdbcTemplateServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public List<Author> findAllAuthorsByLastNameSortByFirstName(final String lastName, final Pageable pageable) {
-		String sql =
-				"SELECT * from author where last_name = ? order by first_name " + pageable.getSort().getOrderFor(
-						"first_name").getDirection().name()
-						+ " limit ? offset ?";
-		return jdbcTemplate.query(sql, getRowMapper(), lastName, pageable.getPageSize(), pageable.getOffset());
+	public List<Author> findAllAuthorsByLastName(final String lastName, final Pageable pageable) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * from author where last_name = ?");
+		if (pageable.getSort().getOrderFor("firstName") != null) {
+			sql.append("order by first_name " + pageable.getSort().getOrderFor("firstName").getDirection().name());
+		}
+		sql.append(" limit ? offset ?");
+		return jdbcTemplate.query(sql.toString(), getRowMapper(), lastName, pageable.getPageSize(),
+			pageable.getOffset());
 	}
 
 	@Override
@@ -40,9 +43,9 @@ public class AuthorSpringJdbcTemplateServiceImpl implements AuthorService {
 	public Author getById(final Long id) {
 
 		String sql =
-				"select author.id as id, first_name, last_name, book.id as book_id, book.isbn, book.publisher, book"
-						+ ".title from author\n"
-						+ "left outer join book on author.id = book.author_id where author.id = ?";
+			"select author.id as id, first_name, last_name, book.id as book_id, book.isbn, book.publisher, book"
+				+ ".title from author\n"
+				+ "left outer join book on author.id = book.author_id where author.id = ?";
 
 		return jdbcTemplate.query(sql, new AuthorExtractor(), id);
 	}
@@ -51,14 +54,14 @@ public class AuthorSpringJdbcTemplateServiceImpl implements AuthorService {
 	public Author findAuthorByName(final String firstName, final String lastName) {
 
 		return jdbcTemplate.queryForObject("SELECT * FROM author where first_name = ? and last_name = ?",
-				getRowMapper(), firstName, lastName);
+			getRowMapper(), firstName, lastName);
 	}
 
 	@Override
 	public Author saveAuthor(final Author author) {
 
 		jdbcTemplate.update("INSERT INTO author (first_name, last_name) values (?, ?)", author.getFirstName(),
-				author.getLastName());
+			author.getLastName());
 
 		Long createdId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
 		return this.getById(createdId);
@@ -68,8 +71,8 @@ public class AuthorSpringJdbcTemplateServiceImpl implements AuthorService {
 	public Author updateAuthor(final Author author) {
 
 		jdbcTemplate.update("UPDATE author set first_name = ?, last_name = ? where id = ?", author.getFirstName(),
-				author.getLastName(),
-				author.getId());
+			author.getLastName(),
+			author.getId());
 		return this.getById(author.getId());
 	}
 

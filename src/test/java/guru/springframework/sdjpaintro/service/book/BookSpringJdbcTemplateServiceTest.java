@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.service;
+package guru.springframework.sdjpaintro.service.book;
 
 import guru.springframework.sdjpaintro.entity.Book;
 import guru.springframework.sdjpaintro.service.book.impl.BookSpringJdbcTemplateServiceImpl;
@@ -31,7 +31,7 @@ class BookSpringJdbcTemplateServiceTest {
 	@Test
 	void testFindAllBooksSortByTitle() {
 		List<Book> books = bookSpringJdbcTemplateServiceImpl.findAllBooksSortByTitle(PageRequest.of(0, 1,
-				Sort.by(Sort.Order.desc("title"))));
+			Sort.by(Sort.Order.desc("title"))));
 		assertThat(books).isNotNull().hasSize(1);
 		assertThat(books.get(0).getTitle()).isEqualTo("Spring In Action");
 	}

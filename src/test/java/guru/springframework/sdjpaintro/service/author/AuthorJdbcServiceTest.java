@@ -1,7 +1,6 @@
-package guru.springframework.sdjpaintro.service;
+package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.entity.Author;
-import guru.springframework.sdjpaintro.service.author.AuthorService;
 import guru.springframework.sdjpaintro.service.author.impl.AuthorJdbcServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

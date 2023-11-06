@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AuthorService {
 
-	List<Author> findAllAuthorsByLastNameSortByFirstName(final String lastName, final Pageable pageable);
+	List<Author> findAllAuthorsByLastName(final String lastName, final Pageable pageable);
 
 	Author getById(Long id);
 
