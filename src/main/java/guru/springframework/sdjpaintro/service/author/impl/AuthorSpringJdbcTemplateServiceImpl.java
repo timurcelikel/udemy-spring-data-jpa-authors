@@ -34,7 +34,7 @@ public class AuthorSpringJdbcTemplateServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public List<Author> listAuthorByLastNameLike(final String lastName) {
+	public List<Author> findAuthorsByLastNameLike(final String lastName) {
 
 		return jdbcTemplate.query("SELECT * FROM author where last_name like ?", getRowMapper(), lastName + "%");
 	}

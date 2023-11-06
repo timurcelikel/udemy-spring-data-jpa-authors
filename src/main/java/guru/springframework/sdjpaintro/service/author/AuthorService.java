@@ -19,5 +19,5 @@ public interface AuthorService {
 
 	void deleteAuthorById(Long id);
 
-	List<Author> listAuthorByLastNameLike(String lastName);
+	List<Author> findAuthorsByLastNameLike(String lastName);
 }

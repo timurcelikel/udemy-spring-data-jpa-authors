@@ -1,6 +1,8 @@
 package guru.springframework.sdjpaintro.repositories;
 
 import guru.springframework.sdjpaintro.entity.Author;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,9 +14,15 @@ import java.util.concurrent.Future;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
+	Page<Author> findAuthorByLastName(String lastName, Pageable pageable);
+	
 	Optional<Author> findAuthorByFirstNameAndLastName(final String firstName, final String lastName);
 
 	List<Author> findAllByFirstName(final String firstName);
+
+	List<Author> findAllByLastNameLike(final String lastName);
+
+	List<Author> findAllByLastNameStartingWith(final String lastName);
 
 	@Async
 	Future<Author> queryByFirstName(final String firstName);
@@ -27,5 +35,5 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 
 	@Query(value = "SELECT * FROM author WHERE first_name = :firstName AND last_name = :lastName", nativeQuery = true)
 	Author findAuthorByFirstAndLastNameWithNativeQuery(@Param("firstName") final String firstName,
-			@Param("lastName") final String lastName);
+		@Param("lastName") final String lastName);
 }

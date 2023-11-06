@@ -90,7 +90,7 @@ public class AuthorHibernateServiceImpl implements AuthorService, AuthorQuerySer
 	}
 
 	@Override
-	public List<Author> listAuthorByLastNameLike(final String lastName) {
+	public List<Author> findAuthorsByLastNameLike(final String lastName) {
 
 		// Better to use try with resources
 		EntityManager em = getEntityManager();

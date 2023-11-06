@@ -21,7 +21,7 @@ public class AuthorJdbcServiceImpl implements AuthorService {
 	}
 
 	@Override
-	public List<Author> listAuthorByLastNameLike(final String lastName) {
+	public List<Author> findAuthorsByLastNameLike(final String lastName) {
 
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -216,7 +216,7 @@ public class AuthorJdbcServiceImpl implements AuthorService {
 	}
 
 	private void closeAll(final ResultSet resultSet, final PreparedStatement ps, final Connection connection)
-			throws SQLException {
+		throws SQLException {
 
 		if (resultSet != null) {
 			resultSet.close();

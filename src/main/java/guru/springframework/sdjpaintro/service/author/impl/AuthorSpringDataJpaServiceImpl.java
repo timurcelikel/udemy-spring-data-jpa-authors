@@ -11,18 +11,29 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 @Service
-public class AuthorSpringDataServiceImpl implements AuthorService {
+public class AuthorSpringDataJpaServiceImpl implements AuthorService {
 
 	private final AuthorRepository authorRepository;
 
-	public AuthorSpringDataServiceImpl(final AuthorRepository authorRepository) {
+	public AuthorSpringDataJpaServiceImpl(final AuthorRepository authorRepository) {
 
 		this.authorRepository = authorRepository;
 	}
 
 	@Override
 	public List<Author> findAllAuthorsByLastName(final String lastName, final Pageable pageable) {
-		return null;
+		return authorRepository.findAuthorByLastName(lastName, pageable).getContent();
+	}
+
+	@Override
+	public List<Author> findAuthorsByLastNameLike(final String lastName) {
+
+		return authorRepository.findAllByLastNameLike("%" + lastName + "%");
+	}
+
+	public List<Author> findAuthorsByLastNameStartingWith(final String lastName) {
+
+		return authorRepository.findAllByLastNameStartingWith(lastName);
 	}
 
 	@Override
@@ -60,7 +71,7 @@ public class AuthorSpringDataServiceImpl implements AuthorService {
 	public Author findAuthorByName(final String firstName, final String lastName) {
 
 		return authorRepository.findAuthorByFirstNameAndLastName(firstName, lastName).orElseThrow(
-				EntityNotFoundException::new);
+			EntityNotFoundException::new);
 	}
 
 	public List<Author> findAllAuthorsByFirstName(final String firstName) {
@@ -88,12 +99,6 @@ public class AuthorSpringDataServiceImpl implements AuthorService {
 	public void deleteAuthorById(final Long id) {
 
 		authorRepository.deleteById(id);
-	}
-
-	@Override
-	public List<Author> listAuthorByLastNameLike(final String lastName) {
-
-		return null;
 	}
 
 	public List<Author> findAllByFirstName(final String firstName) {

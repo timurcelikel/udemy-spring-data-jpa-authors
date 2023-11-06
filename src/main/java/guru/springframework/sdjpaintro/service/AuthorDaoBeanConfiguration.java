@@ -5,7 +5,7 @@ import guru.springframework.sdjpaintro.service.author.AuthorQueryService;
 import guru.springframework.sdjpaintro.service.author.AuthorService;
 import guru.springframework.sdjpaintro.service.author.impl.AuthorHibernateServiceImpl;
 import guru.springframework.sdjpaintro.service.author.impl.AuthorJdbcServiceImpl;
-import guru.springframework.sdjpaintro.service.author.impl.AuthorSpringDataServiceImpl;
+import guru.springframework.sdjpaintro.service.author.impl.AuthorSpringDataJpaServiceImpl;
 import guru.springframework.sdjpaintro.service.author.impl.AuthorSpringJdbcTemplateServiceImpl;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +26,7 @@ public class AuthorDaoBeanConfiguration {
 	private final AuthorRepository authorRepository;
 
 	public AuthorDaoBeanConfiguration(final DataSource dataSource, final JdbcTemplate jdbcTemplate,
-			final EntityManagerFactory entityManagerFactory, final AuthorRepository authorRepository) {
+		final EntityManagerFactory entityManagerFactory, final AuthorRepository authorRepository) {
 
 		this.dataSource = dataSource;
 		this.jdbcTemplate = jdbcTemplate;
@@ -61,7 +61,7 @@ public class AuthorDaoBeanConfiguration {
 	@Bean
 	public AuthorService authorSpringDataDao() {
 
-		return new AuthorSpringDataServiceImpl(authorRepository);
+		return new AuthorSpringDataJpaServiceImpl(authorRepository);
 	}
 
 }

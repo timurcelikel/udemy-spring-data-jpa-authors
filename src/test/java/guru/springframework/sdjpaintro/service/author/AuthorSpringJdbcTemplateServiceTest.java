@@ -2,6 +2,7 @@ package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.entity.Author;
 import guru.springframework.sdjpaintro.repositories.AuthorRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
 @SpringBootTest
+@Transactional
 class AuthorSpringJdbcTemplateServiceTest {
 
 	@Autowired
@@ -56,9 +58,8 @@ class AuthorSpringJdbcTemplateServiceTest {
 	@Test
 	void testFindAuthorsByLastNameLike() {
 
-		List<Author> authors = authorSpringJdbcTemplateDao.listAuthorByLastNameLike("Stein");
-		assertThat(authors).isNotNull();
-		assertThat(authors.size()).isGreaterThan(0);
+		List<Author> authors = authorSpringJdbcTemplateDao.findAuthorsByLastNameLike("Stein");
+		assertThat(authors).isNotNull().hasSize(1);
 	}
 
 	@Test

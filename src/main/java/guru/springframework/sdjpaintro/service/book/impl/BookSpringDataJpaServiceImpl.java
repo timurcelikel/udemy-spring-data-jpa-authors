@@ -5,38 +5,47 @@ import guru.springframework.sdjpaintro.repositories.BookRepository;
 import guru.springframework.sdjpaintro.service.book.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class BookSpringJpaServiceImpl implements BookService {
+public class BookSpringDataJpaServiceImpl implements BookService {
 
 	private final BookRepository bookRepository;
 
-	public BookSpringJpaServiceImpl(BookRepository bookRepository) {
+	public BookSpringDataJpaServiceImpl(BookRepository bookRepository) {
 		this.bookRepository = bookRepository;
 	}
 
 	@Override
 	public List<Book> findAllBooksSortByTitle(final Pageable pageable) {
-		return null;
+		Page<Book> bookPage = bookRepository.findAll(pageable);
+		return bookPage.getContent();
 	}
 
 	@Override
 	public List<Book> findAllBooks(final Pageable pageable) {
-		return null;
+		return bookRepository.findAll(pageable).getContent();
 	}
 
 	@Override
 	public List<Book> findAllBooks(final int pageSize, final int offset) {
-		return null;
+		Pageable pageable = PageRequest.ofSize(pageSize);
+		if (offset > 0) {
+			pageable = pageable.withPage(offset / pageSize);
+		} else {
+			pageable = pageable.withPage(0);
+		}
+		return this.findAllBooks(pageable);
 	}
 
 	@Override
 	public List<Book> findAllBooks() {
-		return null;
+		return bookRepository.findAll();
 	}
 
 	@Override

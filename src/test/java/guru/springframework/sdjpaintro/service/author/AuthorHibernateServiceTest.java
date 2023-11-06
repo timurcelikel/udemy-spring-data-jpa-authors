@@ -1,6 +1,7 @@
 package guru.springframework.sdjpaintro.service.author;
 
 import guru.springframework.sdjpaintro.entity.Author;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest
+@Transactional
 class AuthorHibernateServiceTest {
 
 	@Autowired
@@ -91,7 +93,7 @@ class AuthorHibernateServiceTest {
 	@Test
 	void testListAuthorByLastNameLike() {
 
-		List<Author> authors = authorHibernateDao.listAuthorByLastNameLike("Stein");
+		List<Author> authors = authorHibernateDao.findAuthorsByLastNameLike("Stein");
 		assertThat(authors).isNotNull();
 		assertThat(authors.size()).isGreaterThan(0);
 	}
